@@ -17,5 +17,6 @@
 	
 	<mappers>
 		<mapper resource="mapper/game-mapper.xml" />
+		<mapper resource="mapper/login-mapper.xml" />
 	</mappers>
 </configuration>

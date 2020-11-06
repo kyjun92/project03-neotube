@@ -33,7 +33,7 @@
 						
 						alert("로그인성공");
 						
-						location.href='client2.jsp'
+						location.href='index.jsp'
 					}else{
 					  alert("아이디 비밀번호 확인해주세요");
 					
