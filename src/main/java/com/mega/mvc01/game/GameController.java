@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.mega.mvc01.ChannelVO;
+import com.mega.mvc01.UserLikeVO;
 import com.mega.mvc01.UserRecordVO;
 import com.mega.mvc01.VideoVO;
 
@@ -46,6 +47,14 @@ public class GameController {
 		gameService.inserUserRecord(userRecordVO);
 		
 		
+	}
+	
+	@RequestMapping("selectLike.game")
+	public void selectLike(String videoId, Model model, HttpSession session) {
+		String userId = session.getAttribute("id") +"";
+		UserLikeVO vo = gameService.selectLike(userId, videoId);
+		int like = vo.getLike();
+		model.addAttribute("like", like);
 	}
 	
 }

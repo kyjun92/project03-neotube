@@ -1,11 +1,10 @@
 package com.mega.mvc01.game;
 
 import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import com.mega.mvc01.ChannelVO;
+import com.mega.mvc01.UserLikeVO;
 import com.mega.mvc01.UserRecordVO;
 import com.mega.mvc01.VideoVO;
 
@@ -29,5 +28,10 @@ public class GameService {
 	}
 	public void inserUserRecord(UserRecordVO vo) {
 		dao.insertUserRecord(vo);
+	}
+	
+	public UserLikeVO selectLike(String userId, String videoId) {
+		
+		return dao.selectLike(userId, videoId);
 	}
 }

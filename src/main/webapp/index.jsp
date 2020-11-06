@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
-	<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -10,7 +10,6 @@
 <script
 	src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script type="text/javascript">
-
 	$(function() {
 		<c:set var="id" value="kyjun92" scope="session"/>
 		$
@@ -20,8 +19,6 @@
 
 						console.log(json);
 						/* $(".video_frame").css('display', 'none') */
-						
-						
 
 						for (var i = 0; i < json.length; i++) {
 							date = json[i].video_date
@@ -29,6 +26,7 @@
 							$(".main_frame")
 									.append(
 											"<div id='"+json[i].video_id+"' class='video_frame'><div class='thumbnail_frame'><img width='100%' src='"
+
 													+ json[i].thumbnail
 													+ "'></div><div class='content_frame'><h2>"
 													+ json[i].video_title

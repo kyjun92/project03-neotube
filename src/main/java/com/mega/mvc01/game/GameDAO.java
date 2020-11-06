@@ -6,7 +6,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.mega.mvc01.ChannelVO;
+import com.mega.mvc01.UserLikeVO;
 import com.mega.mvc01.UserRecordVO;
+import com.mega.mvc01.UserVO;
 import com.mega.mvc01.VideoVO;
 
 @Repository
@@ -36,5 +38,17 @@ public class GameDAO {
 	}
 	public void insertUserRecord(UserRecordVO vo) {
 		mybatis.insert("game.insertUserRecord", vo);
+	}
+	
+	public UserLikeVO selectLike(String userId,String videoId) {
+		UserLikeVO vo1 = new UserLikeVO();
+		vo1.setUser_id(userId);
+		vo1.setVideo_id(videoId);
+		UserLikeVO vo = mybatis.selectOne("game.selectLike", vo1);
+		if(vo.getUser_id() == null) {
+			mybatis.insert("insertUserLike", vo);
+			vo = mybatis.selectOne("game.selectLike", videoId);
+		}
+		return vo;
 	}
 }
