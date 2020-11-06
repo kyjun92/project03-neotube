@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="user">
+
+<!-- 회원가입 -->
+	<insert id="insert" parameterType="userVO">
+		insert into user
+		values(#{user_id},#{pw},#{name},#{gender},#{birthday},#{tel});
+	</insert>
+	<!-- 아이디 중복확인 -->
+	<select id="select" parameterType="userVO" resultType="userVO">
+		select user_id from user where user_id = #{user_id}
+	</select>
+	<!-- 로그인체크 -->
+	<select id="select1" parameterType="userVO"
+		resultType="userVO">
+		select * from user where user_id = #{user_id} and pw= #{pw}
+	</select>
+		<!-- 로그인결과창 -->
+	<select id="select2" parameterType="userVO"
+		resultType="userVO">
+		select * from user where user_id = #{user_id} and pw= #{pw}
+	</select>
+	<!-- id찾기 중복확인 -->
+	<select id="select3" parameterType="userVO"
+		resultType="userVO">
+		select * from user where name = #{name} and tel= #{tel}
+	</select>
+	<!-- id찾기 -->
+	<select id="select4" parameterType="userVO" resultType="userVO">
+		select * from user where name = #{name} and tel= #{tel}
+	</select>
+	<!-- pw찾기 중복확인 -->
+	<select id="select5" parameterType="userVO"
+		resultType="userVO">
+		select * from user where user_id = #{user_id} and tel= #{tel}
+	</select>
+		<!-- pw찾기  -->
+	<select id="select6" parameterType="userVO" resultType="userVO">
+		select * from user where user_id = #{user_id} and tel= #{tel}
+	</select>
+
+</mapper>

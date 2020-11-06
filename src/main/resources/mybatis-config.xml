@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration
+  PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+	<typeAliases>
+		<typeAlias type="com.mega.mvc01.BorderVO" alias="borderVO"></typeAlias>
+		<typeAlias type="com.mega.mvc01.ChannelVO" alias="channelVO"></typeAlias>
+		<typeAlias type="com.mega.mvc01.ReplyVO" alias="replyVO"></typeAlias>
+		<typeAlias type="com.mega.mvc01.SubscribeVO" alias="subscribeVO"></typeAlias>
+		<typeAlias type="com.mega.mvc01.UserLikeVO" alias="userLikeVO"></typeAlias>
+		<typeAlias type="com.mega.mvc01.UserRecordVO" alias="userRecordVO"></typeAlias>
+		<typeAlias type="com.mega.mvc01.UserVO" alias="userVO"></typeAlias>
+		<typeAlias type="com.mega.mvc01.VideoVO" alias="videoVO"></typeAlias>
+		
+	</typeAliases>
+	
+	<mappers>
+		<mapper resource="mapper/game-mapper.xml" />
+	</mappers>
+</configuration>

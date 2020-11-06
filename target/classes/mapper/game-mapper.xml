@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="game">
+	<insert id="insert" parameterType="userVO">
+		insert into member values(#{id}, #{pw}, #{name}, #{tel})
+	</insert>
+	<update id="update" parameterType="userVO">
+		update member set tel = #{tel} where id = #{id}
+	</update>
+	<delete id="delete" parameterType="userVO">
+		delete from member where id = #{id}
+	</delete>
+	<select id="game_list" resultType="videoVO">
+		select video_id, video_title, play_num, video_date, channel_id, thumbnail from video where category="game"
+	</select>
+	<select id="playingVideo" parameterType="String" resultType="videoVO">
+		select * from video where video_id = #{id}
+	</select>
+	
+	<select id="selectChannel" parameterType="String" resultType="channelVO">
+		select * from channel where channel_id = #{id}
+	</select>
+	
+	<update id="updatePlaynum">
+		update video set play_num=play_num+1 where video_id = #{id}
+	</update>
+	
+	<insert id="insertUserRecord" parameterType="userRecordVO">
+		insert into user_record values(#{user_id},#{video_id},now())
+	</insert>
+	
+	<select id="one" parameterType="userVO" resultType="userVO">
+		select * from member where id = #{id}
+	</select>
+	<select id="list" resultType="userVO">
+		select * from member
+	</select>
+</mapper>
