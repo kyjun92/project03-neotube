@@ -10,15 +10,19 @@
 <script type="text/javascript">
 console.log("<%=session.getAttribute("id")%>")
 
-$(function() {
-	$.ajax({
-		url : "selectLike.game",
-		success : function(result) {
-			
-		}
+	$(function() {
+		$.ajax({
+			url : "selectLike.game",
+			success : function(like) {
+				console.log(like)
+				if (like == 1) {
+					$('#likeButton').css('fill', '#065fd4')
+				} else if (like == 2) {
+					$('#dislikeButton').css('fill', '#065fd4')
+				}
+			}
+		})
 	})
-})
-
 </script>
 <link rel="stylesheet" href="resources/css/index_page.css">
 </head>
@@ -92,16 +96,18 @@ $(function() {
 					</div>
 
 					<div>
-						<div style="margin-top: 120px; font-size: 20px; font-weight: bolder;">
+						<div id="likeButton"
+							style="fill: #909090; margin-top: 120px; font-size: 20px; font-weight: bolder;">
 							<img width="30px" alt="" src="./resources/img/thumbs-up.png">
 							${videoVO.like_num }
 						</div>
 					</div>
 					<div>
-					<div style="margin-top: 120px; font-size: 20px; font-weight: bolder;">
-						<img width="30px" alt="" src="./resources/img/thumb-down.png">
-						${videoVO.dislike_num }
-					</div>
+						<div id="dislikeButton"
+							style="margin-top: 120px; font-size: 20px; font-weight: bolder;">
+							<img width="30px" alt="" src="./resources/img/thumb-down.png">
+							${videoVO.dislike_num }
+						</div>
 					</div>
 				</div>
 			</div>

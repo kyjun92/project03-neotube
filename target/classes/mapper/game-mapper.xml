@@ -1,40 +1,33 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="game">
-	
+	<!-- Read :: 메인페이지 동영상 목록 호출 -->
 	<select id="game_list" resultType="videoVO">
 		select video_id, video_title, play_num, video_date, channel_id, thumbnail from video where category="game"
 	</select>
+	<!-- Read :: 비디오 플레이 페이지 정보 -->
 	<select id="playingVideo" parameterType="String" resultType="videoVO">
-		select * from video where video_id = #{id}
+		select * from video where video_id = #{video_id}
 	</select>
-	<select id="selectLike" parameterType="String" resultType="userVO">
-		select * from UserLike where video_id = #{id}
-	</select>
-	<select id="insertLike" parameterType="userLikeVO" resultType="userLikeVO">
-		select * from UserLike where user_id = #{user_id} and video_id = #{video_id}
-	</select>
-	
-	<insert id="insertUserLike" parameterType="userLikeVO">
-		insert into user_like values(#{user_id},#{video_id},'0')
-	</insert>
-	
+	<!-- Read :: 재생중인 동영상의 업로드 채널의 정보 -->
 	<select id="selectChannel" parameterType="String" resultType="channelVO">
 		select * from channel where channel_id = #{id}
 	</select>
-	
+	<!-- Read :: 재생중인 동영상의 non/like/dislike 정보 -->
+	<select id="selectLike" parameterType="String" resultType="userVO">
+		select * from user_like where user_id = #{user_id} and video_id = #{video_id}
+	</select>
+	<!-- Create :: 재생중인 동영상의 row가 table에 없을 경우 like=non 추가  -->
+	<insert id="insertUserLike" parameterType="userLikeVO">
+		insert into user_like values(#{user_id},#{video_id},'0')
+	</insert>
+	<!-- Update :: 재생한 동영상의 조회수를 1회 증가 -->
 	<update id="updatePlaynum">
 		update video set play_num=play_num+1 where video_id = #{id}
 	</update>
-	
+	<!-- Create :: 재생한 동영상의 video_id를 record -->
 	<insert id="insertUserRecord" parameterType="userRecordVO">
 		insert into user_record values(#{user_id},#{video_id},now())
 	</insert>
 	
-	<select id="one" parameterType="userVO" resultType="userVO">
-		select * from member where id = #{id}
-	</select>
-	<select id="list" resultType="userVO">
-		select * from member
-	</select>
 </mapper>

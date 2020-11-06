@@ -30,7 +30,7 @@ public class GameService {
 		dao.insertUserRecord(vo);
 	}
 	
-	public UserLikeVO selectLike(String userId, String videoId) {
+	public int selectLike(String userId, String videoId) {
 		
 		return dao.selectLike(userId, videoId);
 	}

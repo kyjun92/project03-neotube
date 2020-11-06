@@ -40,7 +40,7 @@ public class GameDAO {
 		mybatis.insert("game.insertUserRecord", vo);
 	}
 	
-	public UserLikeVO selectLike(String userId,String videoId) {
+	public int selectLike(String userId,String videoId) {
 		UserLikeVO vo1 = new UserLikeVO();
 		vo1.setUser_id(userId);
 		vo1.setVideo_id(videoId);
@@ -49,6 +49,7 @@ public class GameDAO {
 			mybatis.insert("insertUserLike", vo);
 			vo = mybatis.selectOne("game.selectLike", videoId);
 		}
-		return vo;
+		int like = vo.getLike();
+		return like;
 	}
 }

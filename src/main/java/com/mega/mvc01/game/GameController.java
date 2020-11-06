@@ -52,8 +52,8 @@ public class GameController {
 	@RequestMapping("selectLike.game")
 	public void selectLike(String videoId, Model model, HttpSession session) {
 		String userId = session.getAttribute("id") +"";
-		UserLikeVO vo = gameService.selectLike(userId, videoId);
-		int like = vo.getLike();
+		int like = gameService.selectLike(userId, videoId);
+		
 		model.addAttribute("like", like);
 	}
 	

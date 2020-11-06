@@ -12,8 +12,7 @@
 <script type="text/javascript">
 	$(function() {
 		<c:set var="id" value="kyjun92" scope="session"/>
-		$
-				.ajax({
+		$.ajax({
 					url : "select_main.game",
 					success : function(json) {
 
@@ -26,7 +25,6 @@
 							$(".main_frame")
 									.append(
 											"<div id='"+json[i].video_id+"' class='video_frame'><div class='thumbnail_frame'><img width='100%' src='"
-
 													+ json[i].thumbnail
 													+ "'></div><div class='content_frame'><h2>"
 													+ json[i].video_title
