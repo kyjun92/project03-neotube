@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cooking">
+	<select id="cooking_list" resultType="videoVO">
+		select video_id,
+		video_title, play_num, video_date, channel_id, thumbnail from video
+		where category="cooking"
+	</select>
+	
+	<select id="playingVideo" parameterType="String"
+		resultType="videoVO">
+		select * from video where video_id = #{video_id}
+	</select>
+	
+	<select id="selectChannel" parameterType="String"
+		resultType="channelVO">
+		select * from channel where channel_id = #{channel_id}
+	</select>
+
+	<update id="updatePlaynum">
+		update video set play_num = play_num+1 where video_id =
+		#{video_id}
+	</update>
+
+	<insert id="insertUserRecord" parameterType="userRecordVO">
+		insert into
+		user_record values(#{user_id},#{video_id},now())
+	</insert>
+	
+	<select id="selectSubscribe" parameterType="subscribeVO" resultType="Integer">
+		select count(*) from subscribe where user_id = #{user_id} and channel_id = #{channel_id}
+	</select>
+
+	<select id="selectSubscribe2" parameterType="subscribeVO" resultType="Integer">
+		select subscribe from subscribe where user_id = #{user_id} and channel_id = #{channel_id}
+	</select>
+	
+	<insert id="insertSubscribe" parameterType="subscribeVO">
+		insert into subscribe values (#{user_id}, #{channel_id}, 0)
+	</insert>
+	
+	<update id="updateSubscribe" parameterType="subscribeVO">
+		update subscribe set subscribe = #{subscribe} where user_id = #{user_id} and channel_id = #{channel_id}
+	</update>
+	
+	<!-- <insert id="insert" parameterType="userVO"> insert into member values(#{id}, 
+		#{pw}, #{name}, #{tel}) </insert> <update id="update" parameterType="userVO"> 
+		update member set tel = #{tel} where id = #{id} </update> <delete id="delete" 
+		parameterType="userVO"> delete from member where id = #{id} </delete> <select 
+		id="one" parameterType="userVO" resultType="userVO"> select * from member 
+		where id = #{id} </select> <select id="list" resultType="userVO"> select 
+		* from member </select> -->
+</mapper>

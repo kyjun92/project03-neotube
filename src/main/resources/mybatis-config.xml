@@ -18,5 +18,6 @@
 	<mappers>
 		<mapper resource="mapper/game-mapper.xml" />
 		<mapper resource="mapper/login-mapper.xml" />
+		<mapper resource="mapper/cooking-mapper.xml" />
 	</mappers>
 </configuration>
