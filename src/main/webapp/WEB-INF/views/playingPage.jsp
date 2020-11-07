@@ -1,5 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+	<%@ taglib prefix="sql" uri="http://java.sun.com/jsp/jstl/sql" %>
+	
 <!DOCTYPE html>
 <html>
 <head>
@@ -8,21 +10,81 @@
 <script
 	src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script type="text/javascript">
-console.log("<%=session.getAttribute("id")%>")
-
+	var like = ${like}
+	var likeOrigin = like;
+	var video_id = '${videoVO.video_id}'
+	var like_num = ${videoVO.like_num }
+	var dislike_num = ${videoVO.dislike_num }
+	
 	$(function() {
-		$.ajax({
-			url : "selectLike.game",
-			success : function(like) {
-				console.log(like)
-				if (like == 1) {
-					$('#likeButton').css('fill', '#065fd4')
-				} else if (like == 2) {
-					$('#dislikeButton').css('fill', '#065fd4')
-				}
+		
+		likeCheck(like);
+		$(window).on('beforeunload',function() { // 페이지 나갈 때, 변경 된 좋아요 정보 DB update
+			if(like != likeOrigin){
+				$.ajax({
+					url : "updateLike.game",
+					data : {
+						videoId : video_id,
+						like : like,
+						likeOrigin : likeOrigin
+					},
+					success : function() {
+					}
+				})
 			}
 		})
+		
+		$('#likeButton').click(function() {		// 좋아요 버튼 클릭 시 변경 함수
+			if(like == 1){
+				like = 0;
+				like_num -= 1;
+				$('#likeNum').html(like_num);
+				
+			}else{
+				if(like == 2){
+					dislike_num -= 1;
+				}
+				like = 1;
+				like_num++;
+				$('#likeNum').html(like_num);
+				$('#dislikeNum').html(dislike_num);
+			}
+			likeCheck(like);
+		})
+		
+		$('#dislikeButton').click(function() {		//싫어요 버튼 클릭 시 변경 함수
+			if(like == 2){
+				like = 0;
+				dislike_num -= 1;
+				$('#dislikeNum').html(dislike_num);
+			}else{
+				if(like == 1){
+					like_num -= 1;					
+				}
+				like = 2;
+				dislike_num++;
+				$('#likeNum').html(like_num);
+				$('#dislikeNum').html(dislike_num);
+			}
+			likeCheck(like);
+		})
+		
 	})
+	function likeCheck(x) {
+		if (like == 1) { // 페이지 시작시 좋아요 정보에 따라 좋아요/싫어요의 버튼 활성화 체크
+			$('#likeButton').css('background', '#065fd4');
+			$('#dislikeButton').css('background', '#fff');
+		} else if (like == 2) {
+			$('#likeButton').css('background', '#fff');
+			$('#dislikeButton').css('background', '#065fd4');
+		}else{
+			$('#likeButton').css('background', '#fff');
+			$('#dislikeButton').css('background', '#fff');
+			
+		}
+	}
+	
+	
 </script>
 <link rel="stylesheet" href="resources/css/index_page.css">
 </head>
@@ -97,16 +159,16 @@ console.log("<%=session.getAttribute("id")%>")
 
 					<div>
 						<div id="likeButton"
-							style="fill: #909090; margin-top: 120px; font-size: 20px; font-weight: bolder;">
-							<img width="30px" alt="" src="./resources/img/thumbs-up.png">
-							${videoVO.like_num }
+							style="margin-top: 120px; font-size: 20px; font-weight: bolder;">
+							<img style="fill:#065fd4;" width="30px" alt="" src="./resources/img/thumbs-up.png">
+							<span id="likeNum">${videoVO.like_num }</span>
 						</div>
 					</div>
 					<div>
 						<div id="dislikeButton"
 							style="margin-top: 120px; font-size: 20px; font-weight: bolder;">
 							<img width="30px" alt="" src="./resources/img/thumb-down.png">
-							${videoVO.dislike_num }
+							<span id="dislikeNum">${videoVO.dislike_num }</span>
 						</div>
 					</div>
 				</div>

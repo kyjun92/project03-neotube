@@ -14,7 +14,7 @@
 		select * from channel where channel_id = #{id}
 	</select>
 	<!-- Read :: 재생중인 동영상의 non/like/dislike 정보 -->
-	<select id="selectLike" parameterType="String" resultType="userVO">
+	<select id="selectLike" parameterType="userLikeVO" resultType="userLikeVO">
 		select * from user_like where user_id = #{user_id} and video_id = #{video_id}
 	</select>
 	<!-- Create :: 재생중인 동영상의 row가 table에 없을 경우 like=non 추가  -->
@@ -29,5 +29,14 @@
 	<insert id="insertUserRecord" parameterType="userRecordVO">
 		insert into user_record values(#{user_id},#{video_id},now())
 	</insert>
+	<!-- Update :: 수정한 like 정보를 수정 -->
+	<update id="updateLike" parameterType="userLikeVO">
+		update user_like set `like` = #{like} where user_id = #{user_id} and video_id = #{video_id}
+	</update>
+	<!-- Update :: 수정한 like 정보로 video table의 좋아요/싫어요 숫자 수정 -->
+	<update id="updateLikenum" parameterType="java.util.HashMap">
+		update video set like_num = like_num ${like}, dislike_num = dislike_num ${dislike} where video_id = #{videoId}
+	</update>
+	
 	
 </mapper>
