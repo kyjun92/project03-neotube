@@ -12,6 +12,7 @@
 	src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script type="text/javascript">
 	var userId = '<%=session.getAttribute("id") %>'
+	
 	$(function() {
 		if(userId == 'null'){		//로그인 상태 체크
 			$.ajax({							// 메인페이지 로딩 시에 나열될 동영상 정보를 json으로 가져옴(로그인 안한 상태)
