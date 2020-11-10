@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
-	<%@ taglib prefix="sql" uri="http://java.sun.com/jsp/jstl/sql" %>
-	
+<%@ taglib prefix="sql" uri="http://java.sun.com/jsp/jstl/sql"%>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -10,64 +10,121 @@
 <script
 	src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script type="text/javascript">
-	var like = ${like}
-	var likeOrigin = like;
+
+	var userId = '<%=session.getAttribute("id")%>'
 	var video_id = '${videoVO.video_id}'
 	var like_num = ${videoVO.like_num }
 	var dislike_num = ${videoVO.dislike_num }
+	var channelId = '${channelVO.channel_id}'
+	var like
+	var likeOrigin
+	var sub
 	
 	$(function() {
-		
-		likeCheck(like);
-		$(window).on('beforeunload',function() { // 페이지 나갈 때, 변경 된 좋아요 정보 DB update
-			if(like != likeOrigin){
-				$.ajax({
-					url : "updateLike.game",
-					data : {
-						videoId : video_id,
-						like : like,
-						likeOrigin : likeOrigin
-					},
-					success : function() {
-					}
-				})
-			}
-		})
-		
-		$('#likeButton').click(function() {		// 좋아요 버튼 클릭 시 변경 함수
-			if(like == 1){
-				like = 0;
-				like_num -= 1;
-				$('#likeNum').html(like_num);
-				
-			}else{
-				if(like == 2){
-					dislike_num -= 1;
-				}
-				like = 1;
-				like_num++;
-				$('#likeNum').html(like_num);
-				$('#dislikeNum').html(dislike_num);
-			}
+		if(userId != 'null'){ // 로그인 된 상태
+			like = ${like}
+			likeOrigin = like;
+			sub = ${sub}
 			likeCheck(like);
-		})
+			$(window).on('beforeunload',function() { // 페이지 나갈 때, 변경 된 좋아요 정보 DB update
+				if(like != likeOrigin){
+					$.ajax({
+						url : "updateLike.game",
+						data : {
+							videoId : video_id,
+							like : like,
+							likeOrigin : likeOrigin
+						},
+						success : function() {
+						}
+					})
+				}
+			})
 		
-		$('#dislikeButton').click(function() {		//싫어요 버튼 클릭 시 변경 함수
-			if(like == 2){
-				like = 0;
-				dislike_num -= 1;
-				$('#dislikeNum').html(dislike_num);
-			}else{
+			$('#likeButton').click(function() {		// 좋아요 버튼 클릭 시 변경 함수
 				if(like == 1){
-					like_num -= 1;					
+					like = 0;
+					like_num -= 1;
+					$('#likeNum').html(like_num);
+				
+				}else{
+					if(like == 2){
+						dislike_num -= 1;
+					}
+					like = 1;
+					like_num++;
+					$('#likeNum').html(like_num);
+					$('#dislikeNum').html(dislike_num);
 				}
-				like = 2;
-				dislike_num++;
-				$('#likeNum').html(like_num);
-				$('#dislikeNum').html(dislike_num);
-			}
 			likeCheck(like);
-		})
+			})
+		
+			$('#dislikeButton').click(function() {		//싫어요 버튼 클릭 시 변경 함수
+				if(like == 2){
+					like = 0;
+					dislike_num -= 1;
+					$('#dislikeNum').html(dislike_num);
+				}else{
+					if(like == 1){
+						like_num -= 1;					
+					}
+					like = 2;
+					dislike_num++;
+					$('#likeNum').html(like_num);
+					$('#dislikeNum').html(dislike_num);
+				}
+				likeCheck(like);
+			})
+		
+			
+			
+			$('#subscribe').ready(function() {
+				if (sub == 1) {
+					$('#subscribe').text('구독취소')
+					$('#subscribe').css('background','#aaaaaa')
+				} else {
+					$('#subscribe').text('구독')
+					$('#subscribe').css('background','#cc0000')
+				}
+			}) //ready
+
+			$('#subscribe').click(function() {
+				console.log("클릭")
+				$.ajax({
+					url: "updateSuscribe.game",
+					data: {
+						channelId: channelId,
+					},
+					success: $('#subscribe').ready(function() {
+						console.log("석시스")
+						location.reload()
+					}) //success
+				}) //ajax
+			}) //click
+		
+		}else{ // 로그인이 안된 상태
+			
+			$('#likeButton').click(function() {		// 좋아요 버튼 클릭 시 변경 함수
+				location.href = "index.jsp"
+			})
+			$('#dislikeButton').click(function() {		//싫어요 버튼 클릭 시 변경 함수
+				location.href = "index.jsp"
+			})
+			
+			$('#subscribe').ready(function() {
+			
+					$('#subscribe').text('구독')
+					$('#subscribe').css('background','#cc0000')
+				
+			}) //ready
+	
+			$('#subscribe').click(function() {
+				console.log("클릭")
+				location.href="index.jsp"
+			}) //click
+		}
+		
+		
 		
 	})
 	function likeCheck(x) {
@@ -159,14 +216,14 @@
 
 					<div>
 						<div id="likeButton"
-							style="margin-top: 120px; font-size: 20px; font-weight: bolder;">
-							<img style="fill:#065fd4;" width="30px" alt="" src="./resources/img/thumbs-up.png">
-							<span id="likeNum">${videoVO.like_num }</span>
+							style="cursor: pointer;margin-top: 120px; font-size: 20px; font-weight: bolder;">
+							<img style="fill: #065fd4;" width="30px" alt=""
+								src="./resources/img/thumbs-up.png"> <span id="likeNum">${videoVO.like_num }</span>
 						</div>
 					</div>
 					<div>
 						<div id="dislikeButton"
-							style="margin-top: 120px; font-size: 20px; font-weight: bolder;">
+							style="cursor: pointer;margin-top: 120px; font-size: 20px; font-weight: bolder;">
 							<img width="30px" alt="" src="./resources/img/thumb-down.png">
 							<span id="dislikeNum">${videoVO.dislike_num }</span>
 						</div>
@@ -182,7 +239,7 @@
 						src="${channelVO.channel_img }">
 				</div>
 				<div style="padding-top: 15px;">${channelVO.channel_title }</div>
-				<div
+				<div id="subscribe"
 					style="cursor: pointer; background: #cc0000; width: 100%; color: white; text-align: center; font-weight: bolder; padding-top: 17px;">구독</div>
 			</div>
 			<hr>
