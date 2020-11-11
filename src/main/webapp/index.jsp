@@ -11,18 +11,41 @@
 <script
 	src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script type="text/javascript">
-
-	var userId = '<%=session.getAttribute("id") %>'
 	
+	var userId = '<%=session.getAttribute("id") %>'
+	var page_index = <%=request.getParameter("page_i")%>
 	$(function() {
+		if(page_index == null){ 
+			aside_menu_button(0);
+		}
+		aside_menu_button(page_index);
+		
+		$(".aside_button").click(function() {	// 페이지의 인덱스에 따른 메인프레임 동영상 목록 변경
+			page_index = $(this).attr('id')
+			aside_menu_button(page_index)
+			$(".main_frame *").remove();
+			
+		})
+	})
+	
+	function aside_menu_button(x) {  // aside 버튼 색 변경
+		
+		$(".aside_div").css("background", "#212121")
+		$(".aside_button").css("color", "#fff")
+		$("#aside"+x).css("background", "#fff")
+		
+		$("#"+x).css("color", "#000")
+		page_load(x)
+	}
+	
+	function page_load(x) {
 		if(userId == 'null'){		//로그인 상태 체크
 			$.ajax({							// 메인페이지 로딩 시에 나열될 동영상 정보를 json으로 가져옴(로그인 안한 상태)
 				url : "select_main.game",		// 레코드가 없어 최신순으로 불러옴
+				data : {
+					page_index : x
+				},
 				success : function(json) {
-
-					console.log(json);
-					/* $(".video_frame").css('display', 'none') */
-
 					for (var i = 0; i < json.length; i++) {
 						date = json[i].video_date
 						array = date.split(" ")
@@ -48,11 +71,12 @@
 		}else{
 			$.ajax({							// 메인페이지 로딩 시에 나열될 동영상 정보를 json으로 가져옴(로그인 상태)
 				url : "select_main.game",		// 레코드와 각종 정보 기반 추천 알고리즘 순으로 출력 (각자 수정해야되~)
+				data : {
+					page_index : x
+				},
 				success : function(json) {
 
 					console.log(json);
-					/* $(".video_frame").css('display', 'none') */
-
 					for (var i = 0; i < json.length; i++) {
 						date = json[i].video_date
 						array = date.split(" ")
@@ -76,7 +100,7 @@
 				}
 			})
 		}
-	})
+	}
 </script>
 <!-- 메인페이지 css -->
 </head>
@@ -104,23 +128,23 @@
 	</header>
 	<!-- 좌측 사이드바 -->
 	<aside>
-		<div style="margin-left: -65px; margin-top: -15px;">
-			<a href="#" style="font-size: 30px;">홈</a>
+		<div id="aside0" class="aside_div" style="margin-left: -65px; margin-top: -15px;">
+			<a id = "0" class="aside_button" style="font-size: 30px;">홈</a>
 		</div>
-		<div style="margin-left: -65px; margin-top: -15px;">
-			<a href="" style="font-size: 30px;">인기</a>
+		<div id="aside1" class="aside_div" style="margin-left: -65px; margin-top: -15px;">
+			<a id = "1" class="aside_button" style="font-size: 30px;">인기</a>
 		</div>
-		<div style="margin-left: -65px; margin-top: -15px;">
-			<a href="" style="font-size: 30px;">구독</a>
+		<div id="aside2" class="aside_div" style="margin-left: -65px; margin-top: -15px;">
+			<a id = "2" class="aside_button" style="font-size: 30px;">구독</a>
 		</div>
-		<div style="margin-left: -65px; margin-top: -15px;">
-			<a href="" style="font-size: 30px;">좋아요한 동영상</a>
+		<div id="aside3" class="aside_div" style="margin-left: -65px; margin-top: -15px;">
+			<a id = "3" class="aside_button" style="font-size: 30px;">좋아요한 동영상</a>
 		</div>
-		<div style="margin-left: -65px; margin-top: -15px;">
-			<a href="" style="font-size: 30px;">시청기록</a>
+		<div id="aside4" class="aside_div" style="margin-left: -65px; margin-top: -15px;">
+			<a id = "4" class="aside_button" style="font-size: 30px;">시청기록</a>
 		</div>
-		<div style="margin-left: -65px; margin-top: -15px;">
-			<a href="" style="font-size: 30px;">결제</a>
+		<div id="aside5" class="aside_div" style="margin-left: -65px; margin-top: -15px;">
+			<a href="#" style="font-size: 30px;">결제</a>
 		</div>
 	</aside>
 	<!-- 본문 -->

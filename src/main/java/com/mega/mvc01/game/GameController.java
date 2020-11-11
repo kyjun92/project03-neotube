@@ -27,10 +27,11 @@ public class GameController implements ConInterface {
 	@Override
 	@RequestMapping("select_main.game")
 	@ResponseBody // jackson lib를 이용하여 list를 json으로 변환하여 전달
-	public List<VideoVO> select_main2(Model model, HttpSession session) {
+	public List<VideoVO> select_main2(int page_index, Model model, HttpSession session) {
 		// 메인 페이지 시작시 나열되는 동영상 정보를 Read
 		session.setAttribute("id", "kyjun92");
-		List<VideoVO> list = gameService.select_main();
+		String userId = session.getAttribute("id") + "";
+		List<VideoVO> list = gameService.select_main(userId, page_index);
 		model.addAttribute("json", list);
 		
 		return list;
@@ -83,7 +84,7 @@ public class GameController implements ConInterface {
 		}
 		
 	}
-	
+	@Override
 	@RequestMapping("updateSuscribe.game")
 	public void updateSubscribe(String channelId, Model model, HttpSession session) {
 		String userId = session.getAttribute("id") + "";

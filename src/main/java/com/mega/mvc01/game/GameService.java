@@ -18,9 +18,11 @@ public class GameService implements ServiceInterface {
 	DAOInterface dao;
 	
 	@Override
-	public List<VideoVO> select_main() { //메인 동영상 리스트 select
-		return dao.select_main();
+	public List<VideoVO> select_main(String userId, int page_index) { //메인 동영상 리스트 select
+		return dao.select_main(userId, page_index);
 	}
+	
+	
 	@Override
 	public VideoVO playingVideo(String videoId) { // 선택한 동영상 정보 select
 		return dao.playingVideo(videoId);
@@ -50,7 +52,7 @@ public class GameService implements ServiceInterface {
 	public void updateLikeNum(String[] l) { // 변경된 좋아요/싫어요 숫자 수정 update
 		dao.updateLikeNum(l);
 	}
-	
+	@Override
 	public int startSubscribe(SubscribeVO vo) {
 		int a = dao.selectSubscribe(vo); //구독을 했는지 데이터가 있는지를 판단하기 위한 구문
 		if ( a == 0) { //컬럼의 개수가 0이면 항목이 없다는 소리
@@ -58,7 +60,7 @@ public class GameService implements ServiceInterface {
 		}
 		return dao.selectSubscribe2(vo); // 생성 후에 그 데이터의 값을 반환 boolean의 값이기 때문에 0,1로 표기 됨
 	}
-	
+	@Override
 	public int updateSubscibe(SubscribeVO vo) {
 		int a = dao.selectSubscribe2(vo); // 해당 데이터의 구독 값이 참인지 거짓인지 판단하고 업뎃
 		if (a==0) {
@@ -70,4 +72,6 @@ public class GameService implements ServiceInterface {
 		}
 		return dao.selectSubscribe2(vo); // 업뎃이후의 값을 반환
 	}
+	
+
 }

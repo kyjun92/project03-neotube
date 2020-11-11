@@ -8,8 +8,8 @@ import org.springframework.ui.Model;
 
 public interface ServiceInterface {
 
-	List<VideoVO> select_main();
-
+	List<VideoVO> select_main(String userId, int page_index);
+	
 	VideoVO playingVideo(String videoId);
 
 	ChannelVO selectChannel(String channelId);

@@ -3,40 +3,92 @@
 <mapper namespace="game">
 	<!-- Read :: 메인페이지 동영상 목록 호출 -->
 	<select id="game_list" resultType="videoVO">
-		select video_id, video_title, play_num, video_date, channel_id, thumbnail from video where category="game"
+		select video_id, video_title,
+		play_num, video_date, channel_id, thumbnail from video where
+		category="game"
+	</select>
+	<!-- Read :: 인기 페이지 동영상 목록 호출 -->
+	<select id="popular_list" resultType="videoVO">
+		select video_id,
+		video_title, play_num, video_date, channel_id, thumbnail from video
+		where category="game" order by play_num desc
+	</select>
+	<!-- Read :: 구독페이지 동영상 목록 호출 -->
+	<select id="subscribe_list" parameterType="String"
+		resultType="videoVO">
+		select video_id,
+		video_title, play_num, video_date,
+		channel_id, thumbnail from video where channel_id
+		in ( select
+		channel_id
+		from subscribe where user_id = #{user_id}
+		and subscribe
+		=true) order
+		by video_date desc
+	</select>
+	<!-- Read :: 좋아요한페이지 동영상 목록 호출 -->
+	<select id="likeVideo_list" parameterType="String"
+		resultType="videoVO">
+		select video_id,
+		video_title, play_num, video_date,
+		channel_id, thumbnail from video
+		where video_id in (
+		select video_id
+		from user_like
+		where user_id = #{user_id} and like_index =1) order by video_date desc;
+	</select>
+	<!-- Read :: 시청했던 동영상 목록 호출 -->
+	<select id="userRecordVideo_list" resultType="videoVO">
+		select v.video_id,
+		v.video_title, v.play_num, v.video_date, v.channel_id, v.thumbnail,
+		max(ur.record_date)
+		from video v join user_record ur
+		on v.video_id = ur.video_id group by video_id
+		order by ur.record_date desc
 	</select>
 	<!-- Read :: 비디오 플레이 페이지 정보 -->
-	<select id="playingVideo" parameterType="String" resultType="videoVO">
+	<select id="playingVideo" parameterType="String"
+		resultType="videoVO">
 		select * from video where video_id = #{video_id}
 	</select>
 	<!-- Read :: 재생중인 동영상의 업로드 채널의 정보 -->
-	<select id="selectChannel" parameterType="String" resultType="channelVO">
+	<select id="selectChannel" parameterType="String"
+		resultType="channelVO">
 		select * from channel where channel_id = #{id}
 	</select>
 	<!-- Read :: 재생중인 동영상의 non/like/dislike 정보 -->
-	<select id="selectLike" parameterType="userLikeVO" resultType="userLikeVO">
-		select * from user_like where user_id = #{user_id} and video_id = #{video_id}
+	<select id="selectLike" parameterType="userLikeVO"
+		resultType="userLikeVO">
+		select * from user_like where user_id = #{user_id} and
+		video_id = #{video_id}
 	</select>
-	<!-- Create :: 재생중인 동영상의 row가 table에 없을 경우 like=non 추가  -->
+	<!-- Create :: 재생중인 동영상의 row가 table에 없을 경우 like=non 추가 -->
 	<insert id="insertUserLike" parameterType="userLikeVO">
-		insert into user_like values(#{user_id},#{video_id},'0')
+		insert into user_like
+		values(#{user_id},#{video_id},'0')
 	</insert>
 	<!-- Update :: 재생한 동영상의 조회수를 1회 증가 -->
 	<update id="updatePlaynum">
-		update video set play_num=play_num+1 where video_id = #{id}
+		update video set play_num=play_num+1 where video_id =
+		#{id}
 	</update>
 	<!-- Create :: 재생한 동영상의 video_id를 record -->
 	<insert id="insertUserRecord" parameterType="userRecordVO">
-		insert into user_record values(#{user_id},#{video_id},now())
+		insert into
+		user_record values(#{user_id},#{video_id},now())
 	</insert>
 	<!-- Update :: 수정한 like 정보를 수정 -->
 	<update id="updateLike" parameterType="userLikeVO">
-		update user_like set `like` = #{like} where user_id = #{user_id} and video_id = #{video_id}
+		update user_like set
+		like_index = #{like} where user_id = #{user_id} and video_id =
+		#{video_id}
 	</update>
 	<!-- Update :: 수정한 like 정보로 video table의 좋아요/싫어요 숫자 수정 -->
 	<update id="updateLikenum" parameterType="java.util.HashMap">
-		update video set like_num = like_num ${like}, dislike_num = dislike_num ${dislike} where video_id = #{videoId}
+		update video set
+		like_num = like_num ${like}, dislike_num = dislike_num ${dislike}
+		where video_id = #{videoId}
 	</update>
-	
-	
+
+
 </mapper>

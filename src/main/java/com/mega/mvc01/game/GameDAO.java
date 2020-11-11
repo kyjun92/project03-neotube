@@ -1,5 +1,6 @@
 package com.mega.mvc01.game;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -22,12 +23,28 @@ public class GameDAO implements DAOInterface {
 	SqlSessionTemplate mybatis;
 
 	@Override
-	public List<VideoVO> select_main() {
-		List<VideoVO> list = mybatis.selectList("game.game_list");
+	public List<VideoVO> select_main(String userId, int page_index) {
+		List<VideoVO> list = new ArrayList<VideoVO>();
+		if(userId.equals("null")) {
+			list = mybatis.selectList("game.game_list");
+		}else {
+			if(page_index == 0) {
+				list = mybatis.selectList("game.game_list");
+			}else if(page_index == 1) {
+				list = mybatis.selectList("game.popular_list");
+			}else if(page_index == 2) {
+				list = mybatis.selectList("game.subscribe_list", userId);
+			}else if(page_index == 3) {
+				list = mybatis.selectList("game.likeVideo_list", userId);
+			}else if(page_index == 4) {
+				list = mybatis.selectList("game.userRecordVideo_list");
+			}
+		}
+		
 
-		String a = new String();
 		return list;
 	}
+	
 
 	@Override
 	public VideoVO playingVideo(String videoId) { // 재생한 동영상의 정보를 select
@@ -111,26 +128,30 @@ public class GameDAO implements DAOInterface {
 	}
 	
 	// 구독을 누르기 전에 해당 유저가 채널의 구독 여부를 반별해야하는데 db에 목록이 없기 때문에
-		// 먼저 유저의 채널 구독 여부를 db에 저장하고 시작하기 위해
-		public void insertSubscribe(SubscribeVO vo) {
-			mybatis.insert("cooking.insertSubscribe", vo);
-		}
-		
-		// 구독을 했는지의 여부를 판단하고 값을 반환받기 위해
-		// 해당 목록의 숫자를 받아와서 판단
-		public int selectSubscribe(SubscribeVO vo) {
-			return mybatis.selectOne("cooking.selectSubscribe", vo);
-		}
+	// 먼저 유저의 채널 구독 여부를 db에 저장하고 시작하기 위해
+	@Override
+	public void insertSubscribe(SubscribeVO vo) {
+		mybatis.insert("cooking.insertSubscribe", vo);
+	}
+	
+	// 구독을 했는지의 여부를 판단하고 값을 반환받기 위해
+	// 해당 목록의 숫자를 받아와서 판단
+	@Override
+	public int selectSubscribe(SubscribeVO vo) {
+		return mybatis.selectOne("cooking.selectSubscribe", vo);
+	}
 
-		// 구독을 했는지의 여부를 판단하고 값을 반환받기 위해
-		// 구독의 값을 받아서 판단
-		public int selectSubscribe2(SubscribeVO vo) {
-			return mybatis.selectOne("cooking.selectSubscribe2", vo);
-		}
-		
-		// 구독 버튼을 누르면 정보를 업데이트 시켜 주기 위해
-		public void updateSubscribe(SubscribeVO vo) {
-			mybatis.update("cooking.updateSubscribe", vo);
-		}
+	// 구독을 했는지의 여부를 판단하고 값을 반환받기 위해
+	// 구독의 값을 받아서 판단
+	@Override
+	public int selectSubscribe2(SubscribeVO vo) {
+		return mybatis.selectOne("cooking.selectSubscribe2", vo);
+	}
+	
+	// 구독 버튼을 누르면 정보를 업데이트 시켜 주기 위해
+	@Override
+	public void updateSubscribe(SubscribeVO vo) {
+		mybatis.update("cooking.updateSubscribe", vo);
+	}
 
 }

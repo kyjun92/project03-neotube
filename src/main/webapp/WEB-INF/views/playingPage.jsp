@@ -170,19 +170,19 @@
 	<!-- 좌측 사이드바 -->
 	<aside>
 		<div style="margin-left: -65px; margin-top: -15px;">
-			<a href="index.jsp" style="font-size: 30px;">홈</a>
+			<a href="index.jsp?page_i='0'" style="font-size: 30px;">홈</a>
 		</div>
 		<div style="margin-left: -65px; margin-top: -15px;">
-			<a href="" style="font-size: 30px;">인기</a>
+			<a href="index.jsp?page_i='1'" style="font-size: 30px;">인기</a>
 		</div>
 		<div style="margin-left: -65px; margin-top: -15px;">
-			<a href="" style="font-size: 30px;">구독</a>
+			<a href="index.jsp?page_i='2'" style="font-size: 30px;">구독</a>
 		</div>
 		<div style="margin-left: -65px; margin-top: -15px;">
-			<a href="" style="font-size: 30px;">좋아요한 동영상</a>
+			<a href="index.jsp?page_i='3'" style="font-size: 30px;">좋아요한 동영상</a>
 		</div>
 		<div style="margin-left: -65px; margin-top: -15px;">
-			<a href="" style="font-size: 30px;">시청기록</a>
+			<a href="index.jsp?page_i='4'" style="font-size: 30px;">시청기록</a>
 		</div>
 		<div style="margin-left: -65px; margin-top: -15px;">
 			<a href="" style="font-size: 30px;">결제</a>

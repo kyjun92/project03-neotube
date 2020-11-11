@@ -4,8 +4,8 @@ import java.util.List;
 
 public interface DAOInterface {
 
-	List<VideoVO> select_main();
-
+	List<VideoVO> select_main(String userId, int page_index);
+	
 	VideoVO playingVideo(String videoId);
 
 	ChannelVO selectChannel(String channelId);
