@@ -81,7 +81,7 @@ public class GameDAO implements DAOInterface {
 			int like = 0;
 			return like;
 		}
-		int like = vo.getLike();
+		int like = vo.getLike_index();
 		return like;
 	}
 

@@ -21,6 +21,7 @@
 	var sub
 	
 	$(function() {
+		
 		if(userId != 'null'){ // 로그인 된 상태
 			like = ${like}
 			likeOrigin = like;
@@ -87,7 +88,7 @@
 					$('#subscribe').css('background','#cc0000')
 				}
 			}) //ready
-
+			
 			$('#subscribe').click(function() {
 				console.log("클릭")
 				$.ajax({
@@ -103,7 +104,6 @@
 			}) //click
 		
 		}else{ // 로그인이 안된 상태
-			
 			$('#likeButton').click(function() {		// 좋아요 버튼 클릭 시 변경 함수
 				location.href = "index.jsp"
 			})

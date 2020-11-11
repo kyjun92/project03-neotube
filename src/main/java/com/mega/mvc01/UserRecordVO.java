@@ -5,7 +5,7 @@ import java.util.Date;
 public class UserRecordVO {
 	String user_id;
 	String video_id;
-	Date date;
+	Date record_date;
 	public String getUser_id() {
 		return user_id;
 	}
@@ -18,10 +18,11 @@ public class UserRecordVO {
 	public void setVideo_id(String video_id) {
 		this.video_id = video_id;
 	}
-	public Date getDate() {
-		return date;
+	public Date getRecord_date() {
+		return record_date;
 	}
-	public void setDate(Date date) {
-		this.date = date;
+	public void setRecord_date(Date record_date) {
+		this.record_date = record_date;
 	}
+
 }

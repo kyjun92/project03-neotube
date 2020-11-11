@@ -44,7 +44,7 @@
 		max(ur.record_date)
 		from video v join user_record ur
 		on v.video_id = ur.video_id group by video_id
-		order by ur.record_date desc
+		order by max(ur.record_date) desc
 	</select>
 	<!-- Read :: 비디오 플레이 페이지 정보 -->
 	<select id="playingVideo" parameterType="String"
@@ -57,10 +57,8 @@
 		select * from channel where channel_id = #{id}
 	</select>
 	<!-- Read :: 재생중인 동영상의 non/like/dislike 정보 -->
-	<select id="selectLike" parameterType="userLikeVO"
-		resultType="userLikeVO">
-		select * from user_like where user_id = #{user_id} and
-		video_id = #{video_id}
+	<select id="selectLike" parameterType="userLikeVO" resultType="userLikeVO">
+		select * from user_like where user_id = #{user_id} and video_id = #{video_id}
 	</select>
 	<!-- Create :: 재생중인 동영상의 row가 table에 없을 경우 like=non 추가 -->
 	<insert id="insertUserLike" parameterType="userLikeVO">
@@ -80,7 +78,7 @@
 	<!-- Update :: 수정한 like 정보를 수정 -->
 	<update id="updateLike" parameterType="userLikeVO">
 		update user_like set
-		like_index = #{like} where user_id = #{user_id} and video_id =
+		like_index = #{like_index} where user_id = #{user_id} and video_id =
 		#{video_id}
 	</update>
 	<!-- Update :: 수정한 like 정보로 video table의 좋아요/싫어요 숫자 수정 -->

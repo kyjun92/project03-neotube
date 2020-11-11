@@ -52,7 +52,6 @@ public class GameController implements ConInterface {
 			int like = gameService.selectLike(userId, videoId); // user_like table 에서 like 정보 따옴
 			model.addAttribute("like", like);
 			
-			
 			UserRecordVO userRecordVO = new UserRecordVO();
 			userRecordVO.setUser_id(userId);
 			userRecordVO.setVideo_id(videoId);
@@ -77,7 +76,7 @@ public class GameController implements ConInterface {
 			UserLikeVO vo = new UserLikeVO();
 			vo.setUser_id(userId);
 			vo.setVideo_id(videoId);
-			vo.setLike(like);
+			vo.setLike_index(like);
 			gameService.updateLike(vo);
 			String[] l = {videoId, like+"", likeOrigin+""}; // 비디오id, 변경 like, 변경 전 like 정보를 배열로 묶어서 서비스단으로 보냄
 			gameService.updateLikeNum(l);

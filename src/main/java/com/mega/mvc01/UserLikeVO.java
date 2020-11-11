@@ -3,8 +3,7 @@ package com.mega.mvc01;
 public class UserLikeVO {
 	String user_id;
 	String video_id;
-	byte like;
-	
+	byte like_index;
 	public String getUser_id() {
 		return user_id;
 	}
@@ -17,10 +16,11 @@ public class UserLikeVO {
 	public void setVideo_id(String video_id) {
 		this.video_id = video_id;
 	}
-	public byte getLike() {
-		return like;
+	public byte getLike_index() {
+		return like_index;
 	}
-	public void setLike(byte like) {
-		this.like = like;
+	public void setLike_index(byte like_index) {
+		this.like_index = like_index;
 	}
+
 }
