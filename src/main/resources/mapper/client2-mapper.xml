@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="Client2">
+
+<!-- 글쓰기 -->
+<insert id="insert" parameterType="client2VO"  >
+  insert into border values(null,#{user_id},#{border_title},#{content},#{date});
+</insert>
+<!-- 글삭제 -->
+<delete id="delete" parameterType="client2VO" >
+  delete from border where user_id = #{user_id}
+
+</delete>
+<!-- 글수정 -->
+<update id="update" parameterType="client2VO">
+   update border set border_title = #{border_title} , content = #{content},   where user_id = #{user_id} 
+
+</update>
+	<select id = "one" parameterType="client2VO" resultType="client2VO">
+		select * from border where border_id = #{border_id} 
+	</select>
+	
+	  <select id = "now">
+	  
+	  </select>
+</mapper>
+

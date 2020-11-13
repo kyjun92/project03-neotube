@@ -73,5 +73,9 @@ public class GameService implements ServiceInterface {
 		return dao.selectSubscribe2(vo); // 업뎃이후의 값을 반환
 	}
 	
+	public void random() {
+		dao.random();
+	}
+	
 
 }

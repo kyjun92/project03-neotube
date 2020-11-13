@@ -14,7 +14,6 @@
 	href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
 <script src="//code.jquery.com/jquery.min.js"></script>
 <script src="//code.jquery.com/ui/1.11.4/jquery-ui.min.js"></script>
-
 <script>
 	$(function() { //dom tree!!
 		check = 'false'; //id가 가입 되어있음.
@@ -80,7 +79,7 @@
 
 						} else if(pw==pw1){ ///*  else if (condition) 
 						// 회원가입하는 페이지로!!
-						location.href = '../mvc00/insert.do?user_id=' + user_id
+						location.href = '../login/insert.do?user_id=' + user_id
 								+ '&pw=' + pw + '&name=' + name + '&gender='
 								+ gender + '&birthday=' + birthday + '&tel='
 								+ tel

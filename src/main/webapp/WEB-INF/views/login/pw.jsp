@@ -1,5 +1,5 @@
-<%@ page language="java" contentType="text/html; charset=EUC-KR"
-    pageEncoding="EUC-KR"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -28,11 +28,11 @@
 				},
 				success :function(result){
 					if (result == "1") {
-						location.href = '../mvc00/select6.do?user_id=' + user_id + '&tel='
+						location.href = '../login/select6.do?user_id=' + user_id + '&tel='
 						+ tel
 						
 					}else{
-					  alert("¾ÆÀÌµğ¶Ç´ÂÀüÈ­¹øÈ£¸¦ È®ÀÎÇØÁÖ¼¼¿ä");
+					  alert("ì•„ì´ë””ë˜ëŠ”ì „í™”ë²ˆí˜¸ë¥¼ í™•ì¸í•´ì£¼ì„¸ìš”");
 					
 				
 				}//else
@@ -54,26 +54,21 @@
       <div class="col-sm-9 col-md-7 col-lg-5 mx-auto">
         <div class="card card-signin my-5">
           <div class="card-body">
-            <h2 class="card-title text-center">PWÃ£±â</h2>
+            <h2 class="card-title text-center">PWì°¾ê¸°</h2>
             <form class="form-signin">
               <div class="form-label-group">
                 <input type="text" id="user_id" name="user_id" class="form-control" placeholder="Email address" required autofocus>
-                <label for="inputEmail">¾ÆÀÌµğ</label>
+                <label for="inputEmail">ì•„ì´ë””</label>
               </div>
-
+              <br>
               <div class="form-label-group">
-                <input type="password" id="tel" name="tel" class="form-control" placeholder="Password" required>
-                <label for="inputPassword">ÀüÈ­¹øÈ£</label>
+                <input type="password" id="tel" name="tel" class="form-control" placeholder="tel" required>
+                <label for="inputPassword">ì „í™”ë²ˆí˜¸</label>
               </div>
-
-              <div class="custom-control custom-checkbox mb-3">
-                <input type="checkbox" class="custom-control-input" id="customCheck1">
-                <label class="custom-control-label" for="customCheck1">Remember password</label>
-              </div>
-              <button class="btn btn-lg btn-primary btn-block text-uppercase" type="submit" id="b1" name="b1">Sign in</button>
-              <hr class="my-4">
-              <button class="btn btn-lg btn-google btn-block text-uppercase" type="submit"><i class="fab fa-google mr-2"></i> Sign in with Google</button>
-              <button class="btn btn-lg btn-facebook btn-block text-uppercase" type="submit"><i class="fab fa-facebook-f mr-2"></i> Sign in with Facebook</button>
+              <br>
+              
+              <button class="btn btn-lg btn-primary btn-block text-uppercase" type="submit" id="b1" name="b1">ì°¾ê¸°</button>
+              
             </form>
           </div>
         </div>

@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="Reply">
+	<!-- 글쓰기 -->
+	<insert id="insert" parameterType="ReplyVO">
+		insert into reply
+		values(#{reply_id},#{user_id},null,#{border_id},#{content},now())
+	</insert>
+	<!-- 글삭제 -->
+	<delete id="delete" parameterType="ReplyVO">
+		delete from reply where reply_id = #{reply_id}
+	</delete>
+    <!--글목록 -->
+	<select id="list" parameterType="Integer" resultType="replyVO">
+		select *
+		from reply where border_id = #{reply_id}
+	</select>
+	<!-- 카운터 댓글 아이디값 넣기위해 -->
+	<select id="ho" parameterType="ReplyVO" resultType="Integer">
+		select count(user_id) from reply
+	</select>
+    <select id="next" parameterType="ReplyVO" resultType="ReplyVO" >
+    	select * from reply where 
+    </select>
+
+</mapper>
+

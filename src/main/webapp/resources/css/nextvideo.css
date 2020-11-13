@@ -1,0 +1,56 @@
+@charset "UTF-8";
+
+	div.next-video {
+		display: inline-block;
+		width: 420px;
+		height: 130px;
+		overflow: hidden;
+		margin: 0;
+		padding: 5px 10px;
+	}
+	
+	div.next-video-thumbnail {
+		display: inline-block;
+		width: 210px;
+		vertical-align: top;
+	}
+	
+	div.next-video-desc {
+		display: inline-block;
+		width: calc(100% - 215px);
+		vertical-align: top;
+	}
+	
+	span.next-video-desc-title {
+		display: -webkit-box;
+		width: 100%;
+		white-space: normal;
+		overflow: hidden;
+		text-overflow: ellipsis;
+		line-height: 1.2;
+		height: 2.4em;
+		-webkit-line-clamp: 3;
+		-webkit-box-orient: vertical;
+	}
+	
+	div.next-video-mouseon-highlighter {
+		position: relative;
+		background: #cccccc00;
+		display: inline-block;
+		width: calc(100% + 10px);
+		height: 130px;
+		top: -125px;
+		left: -5px;
+		cursor: pointer;
+		z-index: 2;
+		border-radius: 5px;
+	}
+	
+	p.next-video-desc-etc {
+		color: darkgrey;
+	}
+	
+	div.next-video-thumbnail img {
+		width: 210px;
+		height: 120px;
+	}

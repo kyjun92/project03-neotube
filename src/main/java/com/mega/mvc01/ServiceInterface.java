@@ -28,5 +28,7 @@ public interface ServiceInterface {
 	
 	int updateSubscibe(SubscribeVO vo);
 	
+	void random();
+	
 
 }

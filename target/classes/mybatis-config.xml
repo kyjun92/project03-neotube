@@ -7,17 +7,42 @@
 		<typeAlias type="com.mega.mvc01.BorderVO" alias="borderVO"></typeAlias>
 		<typeAlias type="com.mega.mvc01.ChannelVO" alias="channelVO"></typeAlias>
 		<typeAlias type="com.mega.mvc01.ReplyVO" alias="replyVO"></typeAlias>
-		<typeAlias type="com.mega.mvc01.SubscribeVO" alias="subscribeVO"></typeAlias>
-		<typeAlias type="com.mega.mvc01.UserLikeVO" alias="userLikeVO"></typeAlias>
-		<typeAlias type="com.mega.mvc01.UserRecordVO" alias="userRecordVO"></typeAlias>
+		<typeAlias type="com.mega.mvc01.SubscribeVO"
+			alias="subscribeVO"></typeAlias>
+		<typeAlias type="com.mega.mvc01.UserLikeVO"
+			alias="userLikeVO"></typeAlias>
+		<typeAlias type="com.mega.mvc01.UserRecordVO"
+			alias="userRecordVO"></typeAlias>
 		<typeAlias type="com.mega.mvc01.UserVO" alias="userVO"></typeAlias>
 		<typeAlias type="com.mega.mvc01.VideoVO" alias="videoVO"></typeAlias>
-		
+		<typeAlias type="com.mega.mvc01.Client2VO" alias="client2VO"></typeAlias>
+
+		<!-- 승욱 VO -->
+		<typeAlias type="com.mega.mvc01.sport.ChannelVO"
+			alias="channelVO2"></typeAlias>
+		<typeAlias type="com.mega.mvc01.sport.VideoVO"
+			alias="videoVO2"></typeAlias>
+		<typeAlias type="com.mega.mvc01.JoinVO" alias="joinVO"></typeAlias>
+		<typeAlias type="com.mega.mvc01.JoinVideoUserlikeVO"
+			alias="joinVideoUserlikeVO"></typeAlias>
+			
+			<!-- 민석 -->
+			<typeAlias type="com.mega.mvc01.kids.KidsVO" alias="kidsVO"></typeAlias>
+      <typeAlias type="com.mega.mvc01.kids.KidsVOWithChannel" alias="kidsVOWithChannel"></typeAlias>
+      <typeAlias type="com.mega.mvc01.kids.SearcherVO" alias="searcherVO"></typeAlias>
+      <typeAlias type="com.mega.mvc01.kids.UserControlVO" alias="userControlVO"></typeAlias>
+      <typeAlias type="com.mega.mvc01.kids.ReplyVO" alias="replyVO1"></typeAlias>
+      <typeAlias type="com.mega.mvc01.kids.ReplyMaxIDVO" alias="replyMaxIDVO"></typeAlias>
+
 	</typeAliases>
-	
+
 	<mappers>
 		<mapper resource="mapper/game-mapper.xml" />
 		<mapper resource="mapper/login-mapper.xml" />
 		<mapper resource="mapper/cooking-mapper.xml" />
+		<mapper resource="mapper/client2-mapper.xml" />
+		<mapper resource="mapper/reply-mapper.xml" />
+		<mapper resource="mapper/video-mapper.xml" />
+		<mapper resource="mapper/kids-mapper.xml" />
 	</mappers>
 </configuration>

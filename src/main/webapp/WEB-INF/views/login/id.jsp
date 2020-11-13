@@ -1,5 +1,5 @@
-<%@ page language="java" contentType="text/html; charset=EUC-KR"
-    pageEncoding="EUC-KR"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -28,10 +28,10 @@
 				},
 				success :function(result){
 					if (result == "1") {
-						location.href = '../mvc00/select4.do?name=' + name + '&tel='+ tel
+						location.href = '../login/select4.do?name=' + name + '&tel='+ tel
 						
 					}else{
-					  alert("ÀÌ¸§¶Ç´Â¹øÈ£¸¦ È®ÀÎÇØÁÖ¼¼¿ä");
+					  alert("ì´ë¦„ë˜ëŠ”ë²ˆí˜¸ë¥¼ í™•ì¸í•´ì£¼ì„¸ìš”");
 					
 				
 				}//else
@@ -45,26 +45,26 @@
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css" integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2" crossorigin="anonymous">
 </head>
 <body>
-<body>
+
   <div class="container">
     <div class="row">
       <div class="col-sm-9 col-md-7 col-lg-5 mx-auto">
         <div class="card card-signin my-5">
           <div class="card-body">
-            <h2 class="card-title text-center">IDÃ£±â</h2>
+            <h2 class="card-title text-center">IDì°¾ê¸°</h2>
             
               <div class="form-label-group">
                 <input type="text" id="name" name="name" class="form-control" placeholder="Email address" required autofocus>
-                <label for="inputEmail">ÀÌ¸§</label>
+                <label for="inputEmail">ì´ë¦„</label>
               </div>
                <br>
               <div class="form-label-group">
-                <input type="password" id="tel" name="tel" class="form-control" placeholder="Password" required>
-                <label for="inputPassword">ÀüÈ­¹øÈ£</label>
+                <input type="text" id="tel" name="tel" class="form-control" placeholder="tel" required>
+                <label for="inputPassword">ì „í™”ë²ˆí˜¸</label>
               </div>
 				<br>
              
-              <button class="btn btn-lg btn-primary btn-block text-uppercase"  id="b1" name="b1">Ã£±â</button>
+              <button class="btn btn-lg btn-primary btn-block text-uppercase"  id="b1" name="b1">ì°¾ê¸°</button>
              
            
           </div>
@@ -72,6 +72,6 @@
       </div>
     </div>
   </div>
-</body>
+
 </body>
 </html>

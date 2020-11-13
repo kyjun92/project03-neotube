@@ -27,5 +27,6 @@ public interface DAOInterface {
 	int selectSubscribe2(SubscribeVO vo);
 	
 	void updateSubscribe(SubscribeVO vo);
-
+	
+	void random();
 }

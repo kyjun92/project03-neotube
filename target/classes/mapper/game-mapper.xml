@@ -87,6 +87,11 @@
 		like_num = like_num ${like}, dislike_num = dislike_num ${dislike}
 		where video_id = #{videoId}
 	</update>
+	<!-- Create :: user_record 정규분포 랜덤값 생성 -->
+	<insert id="randomRecord" parameterType="String">
+		insert into
+		user_record values('mn4002',#{vId},now())
+	</insert>
 
 
 </mapper>

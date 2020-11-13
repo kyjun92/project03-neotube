@@ -59,12 +59,12 @@
 			</div>
 			<div id="nav_category">
 				<ul>
-					<li><a href="">Sports</a></li>
-					<li><a href="">Games</a></li>
-					<li><a href="">Cooking</a></li>
-					<li><a href="">Kids</a></li>
-					<li><a href="">Supports</a></li>
-					<li><a href="login.jsp">Login</a></li>
+					<li><a href="sports_index.jsp">Sports</a></li>
+					<li><a href="game_index.jsp">Games</a></li>
+					<li><a href="cooking_index.jsp">Cooking</a></li>
+					<li><a href="kids_index.jsp">Kids</a></li>
+					<li><a href="client/client.do">Supports</a></li>
+					<li><a href="login/logn.do">Login</a></li>
 				</ul>
 			</div>
 		</nav>

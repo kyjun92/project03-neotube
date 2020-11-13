@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="kids"><!-- 
+	public KidsVO one(String video_id);
+	public List<KidsVO> listByCategory(String category);
+	public List<KidsVO> listBySearch(String query);
+	public void upload(KidsVO vo); -->
+	<select id = "one" parameterType = "kidsVO" resultType = "kidsVO">	
+		select video_id, video_title, video_url, play_num, video_date, like_num, dislike_num, tag, category, video.channel_id, channel_title
+		from video
+		inner join channel on video.channel_id = channel.channel_id
+		where video_id = #{video_id}
+	</select>
+	<select id = "listByCategory" parameterType = "searcherVO" resultType="kidsVO">
+		select video_id, video_title, video_url, play_num, video_leng, video_date, channel_title, thumbnail 
+		from video
+		inner join channel on video.channel_id = channel.channel_id
+		order by video_date desc, video_title asc
+		limit #{start}, #{amount}
+	</select>
+	<select id = "listBySubscribe" parameterType = "searcherVO" resultType = "kidsVO">
+		select video_id, video_title, video_url, play_num, video_leng, video_date, video.channel_id, channel_title, thumbnail 
+		from video
+		inner join channel on video.channel_id = channel.channel_id
+		inner join (select * from subscribe where user_id='admin' and subscribe= 1 )subscribe_sq
+			on video.channel_id = subscribe_sq.channel_id
+		order by video_date desc, video_title asc
+		limit #{start}, #{amount}
+	</select>
+	<select id = "listByLike" parameterType="searcherVO" resultType="kidsVO">
+		select video.video_id, video_title, video_url, play_num, video_leng, video_date, channel_title, thumbnail 
+		from video
+		inner join channel on video.channel_id = channel.channel_id
+		inner join (select video_id
+			from user_like
+			where user_id='admin') user_like_sq
+			on user_like_sq.video_id = video.video_id
+		order by video_date desc, video_title asc
+		limit #{start}, #{amount}
+	</select>
+	<select id = "listByHistory" parameterType="searcherVO" resultType="kidsVO">
+		select video.video_id, video_title, video_url, play_num, video_leng, video_date, channel_title, thumbnail
+		from video
+		inner join channel on video.channel_id = channel.channel_id
+		inner join (select video_id, max(`date`)
+			from user_record 
+			where user_id = 'admin' 
+			group by video_id
+			order by max(`date`) desc) user_record_sq
+			on user_record_sq.video_id = video.video_id
+		limit #{start}, #{amount}
+	</select>
+	<select id = "listBySearch" resultType="kidsVO">
+	</select>
+	<insert id = "upload" parameterType = "kidsVO">
+	</insert>
+	<insert id = "addHistory" parameterType = "userControlVO">
+		insert into user_record
+		values (#{user_id}, #{video_id}, #{date})
+	</insert>
+	<insert id = "userLike" parameterType = "userControlVO">
+		insert into user_like
+		values (#{user_id}, #{video_id}, 1) 
+	</insert>
+	<insert id = "userDislike" parameterType = "userControlVO">
+		insert into user_like
+		values (#{user_id}, #{video_id}, 2)
+	</insert>
+	<select id = "getLike" parameterType = "userControlVO" resultType="integer">
+		select `like` from user_like
+		where user_id = #{user_id} and video_id = #{video_id}
+	</select>
+	<delete id = "likeCancel" parameterType = "userControlVO">
+		delete from user_like
+		where user_id = #{user_id} and video_id = #{video_id}
+	</delete>
+	<update id = "videoLike" parameterType = "userControlVO">
+		update video
+		set like_num = like_num + 1
+		where video_id = #{video_id}
+	</update>
+	<update id = "videoDislike" parameterType = "userControlVO">
+		update video
+		set dislike_num = dislike_num + 1
+		where video_id = #{video_id}
+	</update>
+	<update id = "videoLikeUndo" parameterType = "userControlVO">
+		update video
+		set like_num = like_num - 1
+		where video_id = #{video_id}
+	</update>
+	<update id = "videoDislikeUndo" parameterType = "userControlVO">
+		update video
+		set dislike_num = dislike_num - 1
+		where video_id = #{video_id}
+	</update>
+	<select id = "getSubscribeOne" parameterType = "userControlVO" resultType = "boolean">
+		select subscribe
+		from subscribe
+		where user_id = #{user_id} and channel_id = #{channel_id}
+	</select>
+	<insert id = "setSubscribe" parameterType="userControlVO">
+		insert into subscribe
+		values(#{user_id}, #{channel_id}, true)
+	</insert>
+	<update id = "doSubscribe" parameterType="userControlVO">
+		update subscribe
+		set subscribe = true
+		where user_id = #{user_id} and channel_id = #{channel_id} 
+	</update>
+	<update id = "undoSubscribe" parameterType="userControlVO">
+		update subscribe
+		set subscribe = false
+		where user_id = #{user_id} and channel_id = #{channel_id} 
+	</update>
+	<select id = "getReplyMaxId" parameterType = "replyMaxIDVO" resultType = "_int">
+		select max(cast(substring(reply_id, CHARACTER_LENGTH(#{category})+2) as signed))
+		from reply
+		where reply_id like concat(#{category}, "_%")
+	</select>
+	<select id = "getReply" parameterType = "replyVO1" resultType = "replyVO1">
+		select user_id, content, date
+		from reply
+		where video_id = #{video_id}
+		order by date desc
+	</select> 
+	<insert id = "postReply" parameterType = "replyVO1">
+		insert into reply
+		value (#{reply_id}, #{user_id}, #{video_id}, null, #{content}, #{date})
+	</insert>
+	<select id = "getCategory" parameterType = "kidsVO" resultType = "string">
+		select category
+		from video
+		where video_id = #{video_id};
+	</select>
+</mapper>

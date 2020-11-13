@@ -94,6 +94,11 @@ public class GameController implements ConInterface {
 		model.addAttribute("result", sub);
 	}
 	
+	@RequestMapping("randomInsert.game")
+	public void random() {
+		gameService.random();
+	}
+	
 
 //	@RequestMapping("selectLike.game")
 //	public void selectLike(String videoId, Model model, HttpSession session) {

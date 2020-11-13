@@ -11,6 +11,7 @@ import org.springframework.stereotype.Repository;
 
 import com.mega.mvc01.ChannelVO;
 import com.mega.mvc01.DAOInterface;
+import com.mega.mvc01.RandomVideo;
 import com.mega.mvc01.SubscribeVO;
 import com.mega.mvc01.UserLikeVO;
 import com.mega.mvc01.UserRecordVO;
@@ -153,5 +154,16 @@ public class GameDAO implements DAOInterface {
 	public void updateSubscribe(SubscribeVO vo) {
 		mybatis.update("cooking.updateSubscribe", vo);
 	}
-
+	
+	public void random() {
+		RandomVideo r = new RandomVideo();
+		String[] vId = r.id();
+		for (int i = 0; i < vId.length; i++) {
+			System.out.println(vId[i]);
+			mybatis.insert("game.randomRecord", vId[i]);
+		}
+	}
+	
+	
+	
 }
