@@ -26,20 +26,17 @@ public class GameDAO implements DAOInterface {
 	@Override
 	public List<VideoVO> select_main(String userId, int page_index) {
 		List<VideoVO> list = new ArrayList<VideoVO>();
-		if(userId.equals("null")) {
+		
+		if(page_index == 0) {
 			list = mybatis.selectList("game.game_list");
-		}else {
-			if(page_index == 0) {
-				list = mybatis.selectList("game.game_list");
-			}else if(page_index == 1) {
-				list = mybatis.selectList("game.popular_list");
-			}else if(page_index == 2) {
-				list = mybatis.selectList("game.subscribe_list", userId);
-			}else if(page_index == 3) {
-				list = mybatis.selectList("game.likeVideo_list", userId);
-			}else if(page_index == 4) {
-				list = mybatis.selectList("game.userRecordVideo_list");
-			}
+		}else if(page_index == 1) {
+			list = mybatis.selectList("game.popular_list");
+		}else if(page_index == 2) {
+			list = mybatis.selectList("game.subscribe_list", userId);
+		}else if(page_index == 3) {
+			list = mybatis.selectList("game.likeVideo_list", userId);
+		}else if(page_index == 4) {
+			list = mybatis.selectList("game.userRecordVideo_list", userId);
 		}
 		
 

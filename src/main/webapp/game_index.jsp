@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-	<%-- <c:set var="id" value="kyjun92" scope="session"/> --%> <!-- 세션 설정 (로그인 엮으면 지워야 됨) -->
+	<c:set var="id" value="kyjun92" scope="session"/> <!-- 세션 설정 (로그인 엮으면 지워야 됨) -->
 <!DOCTYPE html>
 <html>
 <head>
@@ -12,30 +12,41 @@
 	src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script type="text/javascript">
 	
-	var userId = '<%=session.getAttribute("id") %>'
+	var userId = '<%=session.getAttribute("id") %>'   
 	var page_index = <%=request.getParameter("page_i")%>
 	$(function() {
 		if(page_index == null){ 
 			aside_menu_button(0);
+		}else{
+			aside_menu_button(page_index);
 		}
-		aside_menu_button(page_index);
 		
 		$(".aside_button").click(function() {	// 페이지의 인덱스에 따른 메인프레임 동영상 목록 변경
-			page_index = $(this).attr('id')
+			page_index = $(this).attr('id')		// 변경된 페이지 인덱스에 맞는 설정 값으로 비디오 목록 reload
 			aside_menu_button(page_index)
 			$(".main_frame *").remove();
 			
 		})
 	})
 	
-	function aside_menu_button(x) {  // aside 버튼 색 변경
-		
+	function aside_menu_button(x) {  // aside 버튼 css 변경
 		$(".aside_div").css("background", "#212121")
 		$(".aside_button").css("color", "#fff")
 		$("#aside"+x).css("background", "#fff")
-		
 		$("#"+x).css("color", "#000")
-		page_load(x)
+		if(userId == 'null'){
+			if(x>1 || x == 5){
+				location.href="login/logn.do"
+			}else{
+				page_load(x)
+			}
+		}else{
+			if(x==5){
+				location.href="http://127.0.0.1:8000/polls"				
+			}else{
+				page_load(x)
+			}
+		}
 	}
 	
 	function page_load(x) {
@@ -43,13 +54,13 @@
 			$.ajax({							// 메인페이지 로딩 시에 나열될 동영상 정보를 json으로 가져옴(로그인 안한 상태)
 				url : "select_main.game",		// 레코드가 없어 최신순으로 불러옴
 				data : {
-					page_index : x
+					page_index : x				// aside의 menu_index에 따라 불러오는 영상의 순서를 변경 >> aside_index를 controller로 보냄
 				},
-				success : function(json) {
-					for (var i = 0; i < json.length; i++) {
-						date = json[i].video_date
-						array = date.split(" ")
-						$(".main_frame")
+				success : function(json) { 					// 불러온 영상 list를 json의 형태로 반환받아
+					for (var i = 0; i < json.length; i++) { // 순서에 받게 append로 main_frame에 출력
+						date = json[i].video_date			// datetime의 형태(yyyy-MM-dd HH:mm:ss)로 넘어온 String 값을
+						array = date.split(" ")				// 스플릿함수를 이용하여 시간부분은 잘라내고 사용 >> (yyyy-MM-dd)
+						$(".main_frame")					
 								.append(
 										"<div id='"+json[i].video_id+"' class='video_frame'><div class='thumbnail_frame'><img width='100%' src='"
 												+ json[i].thumbnail
@@ -63,7 +74,6 @@
 					}
 					$(".video_frame").click(function() { // 영상 클릭 시 해당 영상 플레이 페이지로 넘어감
 						var id = $(this).attr('id');
-						console.log(id);
 						location.href = "playingPage.game?videoId=" + id;
 					})
 				}
@@ -93,7 +103,7 @@
 												+ " </p></div></div>");
 					}
 					$(".video_frame").click(function() { // 영상 클릭 시 해당 영상 플레이 페이지로 넘어감
-						var id = $(this).attr('id');
+						var id = $(this).attr('id');		//아이디 값을 가지고 들어감
 						console.log(id);
 						location.href = "playingPage.game?videoId=" + id;
 					})
@@ -106,16 +116,16 @@
 </head>
 <body>
 	<!-- 상단 네비게이션 -->
+	<!-- 로그인 및 각 카테고리별로 이동할 수 있는 a태그 모음 -->
 	<header>
 		<nav class="nav_fix">
 			<div id="main_icon">
 				<h3>
-					<a href="index.jsp"><img id="logo"
+					<a href="game_index.jsp"><img id="logo"
 						src="resources/img/logo3.png" width=150 height=30.61></a>
 				</h3>
 			</div>
 			<div id="nav_category">
-			<h1><a href="randomInsert.game">Go to dJango!</a></h1>
 				<ul>
 					<li><a href="sports_index.jsp">Sports</a></li>
 					<li><a href="game_index.jsp">Games</a></li>
@@ -128,6 +138,7 @@
 		</nav>
 	</header>
 	<!-- 좌측 사이드바 -->
+	<!-- 각 카테고리에 기능들을 선택하는 nav 바 -->
 	<aside>
 		<div id="aside0" class="aside_div" style="margin-left: -65px; margin-top: -15px;">
 			<a id = "0" class="aside_button" style="font-size: 30px;">홈</a>
@@ -145,11 +156,12 @@
 			<a id = "4" class="aside_button" style="font-size: 30px;">시청기록</a>
 		</div>
 		<div id="aside5" class="aside_div" style="margin-left: -65px; margin-top: -15px;">
-			<a href="#" style="font-size: 30px;">결제</a>
+			<a id = "5" class="aside_button" style="font-size: 30px;">추천</a>
 		</div>
 	</aside>
 	<!-- 본문 -->
 	<div class="main_page"></div>
+	<!-- 영상 목록이 호출되는 메인프레임 -->
 	<div class="main_frame"
 		style="height: auto; overflow: hidden; width: 1950px; margin-left: 195px;">
 

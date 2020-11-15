@@ -43,7 +43,7 @@
 		v.video_title, v.play_num, v.video_date, v.channel_id, v.thumbnail,
 		max(ur.record_date)
 		from video v join user_record ur
-		on v.video_id = ur.video_id group by video_id
+		on v.video_id = ur.video_id where ur.user_id=#{userId} group by video_id 
 		order by max(ur.record_date) desc
 	</select>
 	<!-- Read :: 비디오 플레이 페이지 정보 -->

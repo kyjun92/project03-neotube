@@ -29,9 +29,8 @@ public class GameController implements ConInterface {
 	@ResponseBody // jackson lib를 이용하여 list를 json으로 변환하여 전달
 	public List<VideoVO> select_main2(int page_index, Model model, HttpSession session) {
 		// 메인 페이지 시작시 나열되는 동영상 정보를 Read
-		session.setAttribute("id", "kyjun92");
 		String userId = session.getAttribute("id") + "";
-		List<VideoVO> list = gameService.select_main(userId, page_index);
+		List<VideoVO> list = gameService.select_main(userId, page_index);		
 		model.addAttribute("json", list);
 		
 		return list;
@@ -39,24 +38,23 @@ public class GameController implements ConInterface {
 
 	@Override
 	@RequestMapping("playingPage.game")
-	public void playingPage(String videoId, Model model, HttpSession session) {
+	public void playingPage(String videoId, Model model, HttpSession session) {	// playing_page에 표시될 정보들을 불러옴
 		
-		String userId = session.getAttribute("id") + "";
+		String userId = session.getAttribute("id") + ""; // session으로 잡혀있는 id값을 가져옴
 		gameService.updatePlaynum(videoId); // 비디오의 조회수 +1
 		
-		VideoVO videoVO = gameService.playingVideo(videoId); // 재생한 비디오의 정보 조회
-		model.addAttribute("videoVO", videoVO);
-		ChannelVO channelVO = gameService.selectChannel(videoVO.getChannel_id()); // 재생한 비디오를 등록한 채널 정보
-		model.addAttribute("channelVO", channelVO);
-		if(!userId.equals("null")) {
+		VideoVO videoVO = gameService.playingVideo(videoId); 	// 재생한 비디오의 정보 조회
+		model.addAttribute("videoVO", videoVO);					// 비디오 정보를 model로 묶음
+		ChannelVO channelVO = gameService.selectChannel(videoVO.getChannel_id()); 	// 재생한 비디오를 등록한 채널 정보
+		model.addAttribute("channelVO", channelVO);									//채널 정보 model
+		if(!userId.equals("null")) {							// login상태를 체크
 			int like = gameService.selectLike(userId, videoId); // user_like table 에서 like 정보 따옴
-			model.addAttribute("like", like);
+			model.addAttribute("like", like);					// 해당 영상에 대한 like_index를 넘김
 			
-			UserRecordVO userRecordVO = new UserRecordVO();
-			userRecordVO.setUser_id(userId);
+			UserRecordVO userRecordVO = new UserRecordVO(); // 새로운 vo를 선언하여
+			userRecordVO.setUser_id(userId);				//user_id와 video_id를 묶어서 Service로 넘김
 			userRecordVO.setVideo_id(videoId);
-			gameService.inserUserRecord(userRecordVO); // user_record table에 조회 기록 등록
-			
+			gameService.inserUserRecord(userRecordVO); 		// user_record table에 조회 기록 등록
 			
 			SubscribeVO subscribeVO = new SubscribeVO();
 			subscribeVO.setUser_id(session.getAttribute("id") + "");
@@ -83,6 +81,8 @@ public class GameController implements ConInterface {
 		}
 		
 	}
+	
+	// 수정되는 구독정보를 update하는 controller
 	@Override
 	@RequestMapping("updateSuscribe.game")
 	public void updateSubscribe(String channelId, Model model, HttpSession session) {
