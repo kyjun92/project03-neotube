@@ -109,11 +109,11 @@ public class KidsService {
 		}
 	}
 
-	public List<ReplyVO> getReply(ReplyVO vo) {
+	public List<KidsReplyVO> getReply(KidsReplyVO vo) {
 		return dao.getReply(vo);
 	}
 
-	public ReplyVO postReply(ReplyVO vo) {
+	public KidsReplyVO postReply(KidsReplyVO vo) {
 		ReplyMaxIDVO rmidvo = new ReplyMaxIDVO();
 		rmidvo.setReply_id(vo.getReply_id());
 		String category = dao.getCategory(vo);

@@ -1,11 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="kids"><!-- 
-	public KidsVO one(String video_id);
-	public List<KidsVO> listByCategory(String category);
-	public List<KidsVO> listBySearch(String query);
-	public void upload(KidsVO vo); -->
-	<select id = "one" parameterType = "kidsVO" resultType = "kidsVO">	
+<mapper namespace="kids">
+	<select id = "kidsone" parameterType = "kidsVO" resultType = "kidsVO">	
 		select video_id, video_title, video_url, play_num, video_date, like_num, dislike_num, tag, category, video.channel_id, channel_title
 		from video
 		inner join channel on video.channel_id = channel.channel_id
@@ -118,13 +114,14 @@
 		from reply
 		where reply_id like concat(#{category}, "_%")
 	</select>
-	<select id = "getReply" parameterType = "replyVO1" resultType = "replyVO1">
+	<select id = "getReply" parameterType = "kidsReplyVO" resultType = "kidsReplyVO">
 		select user_id, content, date
 		from reply
 		where video_id = #{video_id}
 		order by date desc
 	</select> 
-	<insert id = "postReply" parameterType = "replyVO1">
+	
+	<insert id = "postReply" parameterType = "kidsReplyVO">
 		insert into reply
 		value (#{reply_id}, #{user_id}, #{video_id}, null, #{content}, #{date})
 	</insert>

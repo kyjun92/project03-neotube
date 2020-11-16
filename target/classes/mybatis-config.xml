@@ -26,13 +26,13 @@
 		<typeAlias type="com.mega.mvc01.JoinVideoUserlikeVO"
 			alias="joinVideoUserlikeVO"></typeAlias>
 			
-			<!-- 민석 -->
-			<typeAlias type="com.mega.mvc01.kids.KidsVO" alias="kidsVO"></typeAlias>
-      <typeAlias type="com.mega.mvc01.kids.KidsVOWithChannel" alias="kidsVOWithChannel"></typeAlias>
-      <typeAlias type="com.mega.mvc01.kids.SearcherVO" alias="searcherVO"></typeAlias>
-      <typeAlias type="com.mega.mvc01.kids.UserControlVO" alias="userControlVO"></typeAlias>
-      <typeAlias type="com.mega.mvc01.kids.ReplyVO" alias="replyVO1"></typeAlias>
-      <typeAlias type="com.mega.mvc01.kids.ReplyMaxIDVO" alias="replyMaxIDVO"></typeAlias>
+	<!-- 민석 -->
+		<typeAlias type="com.mega.mvc01.kids.KidsVO" alias="kidsVO"></typeAlias>
+	      <typeAlias type="com.mega.mvc01.kids.KidsVOWithChannel" alias="kidsVOWithChannel"></typeAlias>
+	      <typeAlias type="com.mega.mvc01.kids.SearcherVO" alias="searcherVO"></typeAlias>
+	      <typeAlias type="com.mega.mvc01.kids.UserControlVO" alias="userControlVO"></typeAlias>
+	      <typeAlias type="com.mega.mvc01.kids.KidsReplyVO" alias="kidsReplyVO"></typeAlias>
+	      <typeAlias type="com.mega.mvc01.kids.ReplyMaxIDVO" alias="replyMaxIDVO"></typeAlias>
 
 	</typeAliases>
 

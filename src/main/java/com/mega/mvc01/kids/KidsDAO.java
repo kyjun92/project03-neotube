@@ -97,8 +97,8 @@ public class KidsDAO {
 		return mybatis.update("undoSubscribe", vo);
 	}
 
-	public List<ReplyVO> getReply(ReplyVO vo) {
-		List<ReplyVO> bag = mybatis.selectList("getReply",vo);
+	public List<KidsReplyVO> getReply(KidsReplyVO vo) {
+		List<KidsReplyVO> bag = mybatis.selectList("getReply",vo);
 		return bag;
 	}
 
@@ -107,11 +107,11 @@ public class KidsDAO {
 		return result;
 	}
 
-	public int postReply(ReplyVO vo) {
+	public int postReply(KidsReplyVO vo) {
 		return mybatis.insert("postReply",vo);
 	}
 
-	public String getCategory(ReplyVO vo) {
+	public String getCategory(KidsReplyVO vo) {
 		return mybatis.selectOne("getCategory",vo);
 	}
 }

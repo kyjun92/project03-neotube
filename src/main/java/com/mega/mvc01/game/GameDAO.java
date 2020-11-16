@@ -25,7 +25,7 @@ public class GameDAO implements DAOInterface {
 
 	@Override
 	public List<VideoVO> select_main(String userId, int page_index) {
-		List<VideoVO> list = new ArrayList<VideoVO>();
+		List<VideoVO> list = null;
 		
 		if(page_index == 0) {
 			list = mybatis.selectList("game.game_list");

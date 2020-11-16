@@ -131,16 +131,16 @@ public class KidsController {
 	
 	//댓글 가져오기
 	@RequestMapping(value="/reply", method=RequestMethod.GET)
-	public String getReply(ReplyVO vo, Model model) {
-		List<ReplyVO> bag = service.getReply(vo);
+	public String getReply(KidsReplyVO vo, Model model) {
+		List<KidsReplyVO> bag = service.getReply(vo);
 		model.addAttribute("reply_bag", bag);
 		return "reply";
 	}
 	
 	//댓글 쓰기
 	@RequestMapping(value="/reply", method=RequestMethod.POST)
-	public String postReply(ReplyVO vo, Model model) {
-		ReplyVO result = service.postReply(vo);
+	public String postReply(KidsReplyVO vo, Model model) {
+		KidsReplyVO result = service.postReply(vo);
 		model.addAttribute("replyvo", result);
 		return "submitreply";
 	}
