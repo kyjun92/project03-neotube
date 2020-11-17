@@ -18,7 +18,6 @@ public class VideoVO {
 	private String thumbnail;
 	private String channel_title;
 	
-	
 	public String getChannel_title() {
 		return channel_title;
 	}

@@ -1,12 +1,30 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="user">
-
-<!-- 회원가입 -->
+	<!-- 회원가입 -->
 	<insert id="insert" parameterType="UserVO" >
 		insert into user
 		values(#{user_id},#{pw},#{name},#{gender},#{birthday},#{tel});
 	</insert>
+	<!--회원수정  -->
+    <update id="update" parameterType="UserVO">
+	     update user set name= #{name}, pw= #{pw},  tel= #{tel}  where user_id = #{user_id}
+	
+	</update> 
+	
+	<!-- 로그인탈퇴 -->
+	<delete id="delete" parameterType="UserVO" >
+	 delete from user where user_id = #{user_id}
+	</delete>
+	<!-- 로그인탈퇴 ()댓글 -->
+	<delete id="deleteBorder" parameterType="BorderVO" >
+	 delete from border where user_id = #{user_id}
+	</delete> 
+	<!-- 로그인탈퇴 ()게시판 -->
+	<delete id="deleteReply" parameterType="ReplyVO" >
+	 delete from reply where user_id = #{user_id}
+	</delete>  
+	
 	<!-- 아이디 중복확인 -->
 	<select id="select" parameterType="UserVO" resultType="UserVO">
 		select user_id from user where user_id = #{user_id}
@@ -39,5 +57,11 @@
 	<select id="select6" parameterType="UserVO" resultType="UserVO">
 		select * from user where user_id = #{user_id} and tel= #{tel}
 	</select>
-
+	<!-- 회원정보 페이지 -->
+		<select id="profile" parameterType="UserVO" resultType="UserVO">
+		select * from user where user_id = #{user_id} 
+	</select>
+	
+	
 </mapper>
+

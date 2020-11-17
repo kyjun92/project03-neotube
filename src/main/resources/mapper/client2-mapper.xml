@@ -3,25 +3,40 @@
 <mapper namespace="Client2">
 
 <!-- 글쓰기 -->
-<insert id="insert" parameterType="client2VO"  >
+<insert id="insert" parameterType="Client2VO"  >
   insert into border values(null,#{user_id},#{border_title},#{content},#{date});
 </insert>
 <!-- 글삭제 -->
-<delete id="delete" parameterType="client2VO" >
-  delete from border where user_id = #{user_id}
+<delete id="delete" parameterType="Client2VO" >
+  delete from border where border_id = #{border_id}
+
+</delete>
+<!-- 댓글 삭제(게시글번호아이디) -->
+<delete id="deleteReply" parameterType="Client2VO" >
+  delete from reply where border_id = #{border_id}
 
 </delete>
 <!-- 글수정 -->
-<update id="update" parameterType="client2VO">
-   update border set border_title = #{border_title} , content = #{content},   where user_id = #{user_id} 
+<update id="update" parameterType="Client2VO">
+   update border set border_title = #{border_title} , content = #{content}  where border_id = #{border_id} 
 
 </update>
-	<select id = "one" parameterType="client2VO" resultType="client2VO">
+	<select id = "one" parameterType="Client2VO" resultType="Client2VO">
 		select * from border where border_id = #{border_id} 
 	</select>
 	
-	  <select id = "now">
-	  
-	  </select>
+	<select id= "bbsList" parameterType="String" resultType="Client2VO">
+		select * from border where border_title like CONCAT('%',#{border_title},'%')
+	</select>
+    
+    <select id ="countAll" resultType="int">
+    select count(*) from border
+    </select>
+    
+    <select id ="findAll" resultType="Client2VO">
+    select * from border 
+    order by border.date desc limit #{offset}, #{pageSize}
+    </select>
+    
 </mapper>
 

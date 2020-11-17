@@ -26,12 +26,12 @@
 			</div>
 			<div id="nav_category">
 				<ul>
-					<li><a href="">Sports</a></li>
-					<li><a href="">Games</a></li>
-					<li><a href="">Cooking</a></li>
-					<li><a href="">Kids</a></li>
-					<li><a href="">Supports</a></li>
-					<li><a href="">Login</a></li>
+					<li><a href="../sports_index.jsp">Sports</a></li>
+					<li><a href="../game_index.jsp">Games</a></li>
+					<li><a href="../cooking_index.jsp">Cooking</a></li>
+					<li><a href="../kids_index.jsp">Kids</a></li>
+					<li><a href="../client/client.do">Supports</a></li>
+					<li><a href="../login/logn.do">Login</a></li>
 				</ul>
 			</div>
 		</nav>
@@ -39,7 +39,7 @@
 	<!-- 좌측 사이드바 -->
 	<aside>
 		<div style="margin-left: -65px; margin-top: -15px;">
-			<a id="home" href="../main.jsp" style="font-size: 30px;">홈</a>
+			<a id="home" href="../sports_index.jsp" style="font-size: 30px;">홈</a>
 		</div>
 		<div style="margin-left: -65px; margin-top: -15px;">
 			<a id="popular" href="popular.do" style="font-size: 30px;">인기</a>

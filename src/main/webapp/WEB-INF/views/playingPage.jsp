@@ -11,7 +11,7 @@
 	src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script type="text/javascript">
 
-	var userId = '<%=session.getAttribute("id")%>' // 세션에 잡혀있는 userId를 저장할 변수
+	var userId = '<%=session.getAttribute("user_id")%>' // 세션에 잡혀있는 userId를 저장할 변수
 	var video_id = '${videoVO.video_id}'  //비디오 id를 저장할 변수
 	var like_num = ${videoVO.like_num } // 좋아요수를 저장할 변수 
 	var dislike_num = ${videoVO.dislike_num } // 싫어요수를 저장할 변수

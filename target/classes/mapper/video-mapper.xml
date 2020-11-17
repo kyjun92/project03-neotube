@@ -1,97 +1,163 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="video">
-	<select id="select" resultType="videoVO2">
-		select * from video
-	</select>
-	<select id="popular" resultType="joinVO">
-		select v.video_title ,v.play_num , v.video_date ,v.thumbnail
-		,c.channel_title ,v.video_id , c.channel_title
-		,c.channel_img,v.channel_id
-		from video as v
-		join channel as c
-		on c.channel_id = v.channel_id order by v.play_num desc
-	</select>
-	<select id="list" parameterType="videoVO2" resultType="videoVO2">
-		select * from video where video_id = #{video_id}
-	</select>
-	<select id="list2" parameterType="channelVO2"
-		resultType="channelVO2">
-		select * from channel where channel_id = #{channel_id}
-	</select>
-	
-	<select id="join" resultType="joinVO">
-		select v.video_title ,v.play_num , v.video_date ,v.thumbnail
-		,c.channel_title ,v.video_id , c.channel_title
-		,c.channel_img,v.channel_id
-		from video as v
-		join channel as c
-		on c.channel_id = v.channel_id
-	</select>
-	<insert id="likeinsert" parameterType="String">
-		insert into user_like values(#{user_id},#{video_id},null)
-	</insert>
-	<select id="likeVideo" resultType="joinVideoUserlikeVO">
-	select distinct * from video as v join user_like as u on v.video_id = u.video_id  ; 
-	</select>
-	<!-- 시청기록 db 적재 -->
-	<insert id="user_recordInsert" parameterType="userrecordVO">
-	 	insert into user_record values(#{user_id}, #{video_id},now())
-	</insert>
-	<!-- 구독 db insert문  -->
-	<select id="recordView" resultType="videoVO2">
-	select v.video_id,
-		v.video_title, v.play_num, v.video_date, v.channel_id, v.thumbnail,v.channel_title,
-		max(ur.date)
-		from video v join user_record ur
-		on v.video_id = ur.video_id group by video_id
-		order by max(ur.date) desc
-	</select>
-	<select id="subscribeList" parameterType="String" resultType="videoVO2">
-		select video_id,
-		video_title, play_num, video_date,
-		channel_id, thumbnail,video_title from video where channel_id
-		in ( select
-		channel_id
-		from subscribe where user_id = #{user_id}
-		and subscribe
-		=0) order
-		by video_date desc
-	</select>
-		<update id="updatePlaynum" parameterType="string">
-		update video set play_num=play_num+1 where video_id = #{video_id}
-	</update>
-	
-	<!-- 구독여부 -->
-	<select id="subscribeBoolean" parameterType="subscribeVO" resultType="subscribeVO">
-	select distinct * from subscribe where user_id = #{user_id} and channel_id = #{channel_id}
-	</select>
-	
-	<select id="subscribeCount" resultType="int">
-		select count(*) from subscribe where user_id= #{user_id} and channel_id = #{channel_id}
-	</select>
-	
-	<!-- 구독하기  -->
-	<update id="updateSubscribe1" parameterType="subscribeVO">
-		update subscribe set subscribe = 1 where user_id = #{user_id} and channel_id = #{channel_id}
-	</update>
-	
-	<!-- 구독취소  -->
-		<update id="updateSubscribe0" parameterType="subscribeVO">
-		update subscribe set subscribe = 0 where user_id = #{user_id} and channel_id = #{channel_id}
-	</update>
-	
-	<select id="selectSubscribe" parameterType="subscribeVO" resultType="Integer">
-		select count(*) from subscribe where user_id = #{user_id} and channel_id = #{channel_id}
-	</select>
 
-	<select id="selectSubscribe2" parameterType="subscribeVO" resultType="Integer">
-		select subscribe from subscribe where user_id = #{user_id} and channel_id = #{channel_id}
-	</select>
-	
-	<insert id="insertSubscribe" parameterType="subscribeVO">
-		insert into subscribe values (#{user_id}, #{channel_id}, 0)
-	</insert>
-	
-	
+   <!-- video테이블의 모든 칼럼을 select -->
+   <select id="select" resultType="videoVO2">
+      select * from video where category = '스포츠'
+   </select>
+   
+   <!-- video 테이블과 channel 테이블을 join 한 결과를 select  -->
+   <select id="popular" resultType="joinVO">
+      select v.video_title ,v.play_num , v.video_date ,v.thumbnail
+      ,c.channel_title ,v.video_id , c.channel_title
+      ,c.channel_img,v.channel_id
+      from video as v
+      join channel as c
+      on c.channel_id = v.channel_id order by v.play_num desc
+   </select>
+   
+   <!-- video_id의 해당되는 값을 vo로 반환  -->
+   <select id="list" parameterType="videoVO2" resultType="videoVO2">
+      select * from video where video_id = #{video_id}
+   </select>
+   
+   <!-- channel_id의 해당되는 값을 vo로 반환 -->
+   <select id="list2" parameterType="channelVO2"
+      resultType="channelVO2">
+      select * from channel where channel_id = #{channel_id}
+   </select>
+   
+   <!-- video, channel 조인한 결과를 반환 -->
+   <select id="join" resultType="joinVO">
+      select v.video_title ,v.play_num , v.video_date ,v.thumbnail
+      ,c.channel_title ,v.video_id , c.channel_title
+      ,c.channel_img,v.channel_id
+      from video as v
+      join channel as c
+      on c.channel_id = v.channel_id
+   </select>
+   
+   <!-- user_like 테이블에 user_id 와 video_id값을 insert한다 . -->
+   <insert id="likeinsert" parameterType="String">
+      insert into user_like values(#{user_id},#{video_id},null)
+   </insert>
+   
+   <!-- 좋아요 가 눌린 테이블을 distinct로 중복되는 값들을 걸러준다. -->
+   <select id="likeVideo" resultType="joinVideoUserlikeVO">
+   select distinct * from video as v join user_like as u on v.video_id = u.video_id and like_index =1  
+   </select>
+   
+   <!-- 시청기록 db 적재 -->
+   <insert id="user_recordInsert" parameterType="userrecordVO">
+       insert into user_record values(#{user_id}, #{video_id},now())
+   </insert>
+   
+   <!-- 구독 db insert문  -->
+   <select id="recordView" resultType="videoVO2">
+   select v.video_id,
+      v.video_title, v.play_num, v.video_date, v.channel_id, v.thumbnail,v.channel_title,
+      max(ur.date)
+      from video v join user_record ur
+      on v.video_id = ur.video_id group by video_id
+      order by max(ur.date) desc
+   </select>
+   
+   <!-- 구독리스트를 뽑아 list로 뽑아줌 -->
+   <select id="subscribeList" parameterType="String" resultType="videoVO2">
+      select * from video where channel_id
+      in ( select
+      channel_id
+      from subscribe where user_id = #{user_id}
+      and subscribe
+      =0) order
+      by video_date desc
+   </select>
+   
+   <!-- 페이지를 들어갈때마다 조회수 +1 -->
+      <update id="updatePlaynum" parameterType="string">
+      update video set play_num=play_num+1 where video_id = #{video_id}
+   </update>
+   
+   <!-- 구독여부 -->
+   <select id="subscribeBoolean" parameterType="subscribeVO" resultType="subscribeVO">
+   select distinct * from subscribe where user_id = #{user_id} and channel_id = #{channel_id}
+   </select>
+   
+   <select id="subscribeCount" resultType="int">
+      select count(*) from subscribe where user_id= #{user_id} and channel_id = #{channel_id}
+   </select>
+   
+   <!-- 구독하기  -->
+   <update id="updateSubscribe1" parameterType="subscribeVO">
+      update subscribe set subscribe = 1 where user_id = #{user_id} and channel_id = #{channel_id}
+   </update>
+   
+   <!-- 구독취소  -->
+      <update id="updateSubscribe0" parameterType="subscribeVO">
+      update subscribe set subscribe = 0 where user_id = #{user_id} and channel_id = #{channel_id}
+   </update>
+   
+   <select id="selectSubscribe" parameterType="subscribeVO" resultType="Integer">
+      select count(*) from subscribe where user_id = #{user_id} and channel_id = #{channel_id}
+   </select>
+
+   <select id="selectSubscribe2" parameterType="subscribeVO" resultType="Integer">
+      select subscribe from subscribe where user_id = #{user_id} and channel_id = #{channel_id}
+   </select>
+   
+   <insert id="insertSubscribe" parameterType="subscribeVO">
+      insert into subscribe values (#{user_id}, #{channel_id}, 0)
+   </insert>
+
+   
+<!-- Create :: 재생중인 동영상의 row가 table에 없을 경우 like=non 추가 -->
+   <insert id="insertUserLike" parameterType="userLikeVO">
+      insert into user_like
+      values(#{user_id},#{video_id}, 0)
+   </insert>
+
+<!-- Read :: 재생중인 동영상의 non/like/dislike 정보 -->
+   <select id="selectLike" parameterType="userLikeVO" resultType="userLikeVO">
+      select distinct * from user_like where user_id = #{user_id} and video_id = #{video_id}
+   </select>
+   
+   <select id="selectLikeindex" parameterType="userLikeVO" resultType="userLikeVO">
+      select * from user_like where user_id = #{user_id} and video_id = #{video_id}
+   </select>
+   
+   <!-- Update :: 수정한 like 정보를 1로 수정 -->
+   <update id="updateLike1" parameterType="userLikeVO">
+      update user_like set
+      like_index = 1 where user_id = #{user_id} and video_id =
+      #{video_id}
+   </update>
+   
+   <!-- Update :: 수정한 like 정보를 2로 수정 -->
+   <update id="updateLike2" parameterType="userLikeVO">
+      update user_like set
+      like_index = 2 where user_id = #{user_id} and video_id =
+      #{video_id}
+   </update>
+
+
+
+<!--update-->
+   <update id="updatePlusLike" parameterType="videoVO2">
+   update video set like_num += 1 where video_id = #{video_id}
+   </update>
+   
+   <update id="updateMinusLike" parameterType="videoVO2">
+   update video set like_num -= 1 where video_id = #{video_id}
+   </update>
+   
+      <update id="updatePlusDislike" parameterType="videoVO2">
+   update video set dislike_num += 1 where video_id = #{video_id}
+   </update>
+   
+   <update id="updateMinusDislike" parameterType="videoVO2">
+   update video set dislike_num -= 1 where video_id = #{video_id}
+   </update>
+   
+   
 </mapper>

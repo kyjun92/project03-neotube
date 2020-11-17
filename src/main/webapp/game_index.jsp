@@ -11,8 +11,11 @@
 <script
 	src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script type="text/javascript">
-	
-	var userId = '<%=session.getAttribute("id") %>'   
+
+
+	                  
+	  
+	var userId = '<%=session.getAttribute("user_id") %>'   
 	var page_index = <%=request.getParameter("page_i")%>
 	$(function() {
 		if(page_index == null){ 
@@ -27,6 +30,13 @@
 			$(".main_frame *").remove();
 			
 		})
+		 if(userId == 'null'){      
+			 $("#logout").css('display','none'); 
+			 $("#login").css('display','inline-block');
+		}else{                                
+			$("#login").css('display','none'); 
+			$("#logout").css('display','inline-block');
+		}   
 	})
 	
 	function aside_menu_button(x) {  // aside 버튼 css 변경
@@ -101,7 +111,8 @@
 					<li><a href="cooking_index.jsp">Cooking</a></li>
 					<li><a href="kids_index.jsp">Kids</a></li>
 					<li><a href="client/client.do">Supports</a></li>
-					<li><a href="login/logn.do">Login</a></li>
+					<li><a href="login/logn.do" onclick="window.open(this.href, '_blank', 'width=900px,height=700px,toolbars=no,scrollbars=no'); return false;" id="login">Login</a></li>
+					<li><a href="login/logout.do" id="logout">logout</a></li>
 				</ul>
 			</div>
 		</nav>

@@ -32,8 +32,8 @@
 					if (result == "1") {
 
 						alert("로그인성공");
-
-						location.href = '../main.jsp'
+						
+	    	            window.close(history.go());
 					} else {
 						alert("아이디 비밀번호 확인해주세요");
 
@@ -44,6 +44,8 @@
 			})
 
 		})
+
+
 	})
 	
 </script>

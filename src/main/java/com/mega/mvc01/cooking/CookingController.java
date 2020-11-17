@@ -24,7 +24,6 @@ public class CookingController {
 	@RequestMapping("cooking/select_main.cooking")
 	@ResponseBody // jackson lib를 이용하여 list를 json으로 변환하여 전달
 	public List<VideoVO> select_main2(Model model, HttpSession session) {
-		session.setAttribute("id", "kyjun92");
 
 		List<VideoVO> list = cookingService.select_main();
 		model.addAttribute("json", list);

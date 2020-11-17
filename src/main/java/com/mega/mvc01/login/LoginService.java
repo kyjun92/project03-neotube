@@ -27,6 +27,7 @@ public class LoginService {
 		 int result = dao.select1(loginvo);
 		 return result;
 	}
+	
 	//id찾기
 	public UserVO select2(UserVO loginvo) {
 		 return dao.select2(loginvo);

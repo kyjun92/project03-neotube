@@ -29,7 +29,7 @@ public class GameController implements ConInterface {
 	@ResponseBody // jackson lib를 이용하여 list를 json으로 변환하여 전달
 	public List<VideoVO> select_main2(int page_index, Model model, HttpSession session) {
 		// 메인 페이지 시작시 나열되는 동영상 정보를 Read
-		String userId = session.getAttribute("id") + "";
+		String userId = session.getAttribute("user_id") + "";
 		List<VideoVO> list = gameService.select_main(userId, page_index);		
 		model.addAttribute("json", list);
 		
@@ -40,7 +40,7 @@ public class GameController implements ConInterface {
 	@RequestMapping("playingPage.game")
 	public void playingPage(String videoId, Model model, HttpSession session) {	// playing_page에 표시될 정보들을 불러옴
 		
-		String userId = session.getAttribute("id") + ""; // session으로 잡혀있는 id값을 가져옴
+		String userId = session.getAttribute("user_id") + ""; // session으로 잡혀있는 id값을 가져옴
 		gameService.updatePlaynum(videoId); // 비디오의 조회수 +1
 		
 		VideoVO videoVO = gameService.playingVideo(videoId); 	// 재생한 비디오의 정보 조회
@@ -57,7 +57,7 @@ public class GameController implements ConInterface {
 			gameService.inserUserRecord(userRecordVO); 		// user_record table에 조회 기록 등록
 			
 			SubscribeVO subscribeVO = new SubscribeVO();
-			subscribeVO.setUser_id(session.getAttribute("id") + "");
+			subscribeVO.setUser_id(session.getAttribute("user_id") + "");
 			subscribeVO.setChannel_id(videoVO.getChannel_id());
 			int sub = gameService.startSubscribe(subscribeVO);
 			model.addAttribute("sub", sub);
@@ -68,7 +68,7 @@ public class GameController implements ConInterface {
 	@RequestMapping("updateLike.game")
 	public void leavePlayingPage(String videoId, byte like, byte likeOrigin, Model model, HttpSession session) {
 		// 페이지를 나갈 때, 변경된 좋아요 정보 수정
-		String userId = session.getAttribute("id") + "";
+		String userId = session.getAttribute("user_id") + "";
 		if(!userId.equals("null")) {
 			
 			UserLikeVO vo = new UserLikeVO();
@@ -86,7 +86,7 @@ public class GameController implements ConInterface {
 	@Override
 	@RequestMapping("updateSuscribe.game")
 	public void updateSubscribe(String channelId, Model model, HttpSession session) {
-		String userId = session.getAttribute("id") + "";
+		String userId = session.getAttribute("user_id") + "";
 		SubscribeVO vo = new SubscribeVO();
 		vo.setUser_id(userId);
 		vo.setChannel_id(channelId);

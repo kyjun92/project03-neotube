@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import com.mega.mvc01.JoinVO;
 import com.mega.mvc01.JoinVideoUserlikeVO;
 import com.mega.mvc01.SubscribeVO;
+import com.mega.mvc01.UserLikeVO;
 import com.mega.mvc01.UserRecordVO;
 
 
@@ -21,8 +22,6 @@ public class VideoController {
 	@Autowired
 	VideoService service;
 	
-	@Autowired
-	Algorithm algorithm;
 	
 	/*
 	@RequestMapping("")
@@ -33,8 +32,8 @@ public class VideoController {
 	
 	//홈
 	@RequestMapping("sports/main_view.do")
-	public void list(Model model,JoinVO joinVO) {
-		List<JoinVO> list = service.join();
+	public void list(Model model,JoinVO joinVO) throws Exception {
+		List<VideoVO> list = service.recommandAlgorithm();
 		model.addAttribute("list" ,list);
 	}
 	
@@ -43,7 +42,6 @@ public class VideoController {
 	public void popular(Model model) {
 		List<JoinVO> list = service.popular();
 		model.addAttribute("list" ,list);
-		System.out.println("popular 넘어가기");
 	} 
 	
 	//결제 api
@@ -72,10 +70,6 @@ public class VideoController {
 		public void main() {
 		}
 		
-		@RequestMapping("sports/Algorithm.do")
-		public void algorithm() throws Exception{
-			
-		}
 		
 		
 //		@RequestMapping("sports/like.do")
@@ -112,6 +106,8 @@ public class VideoController {
 		@RequestMapping("sports/subscribe.do")
 		public void subscribeList(String user_id,Model model) {
 			List<VideoVO> list = service.subscribeList(user_id);
+			String a = list.get(1).getChannel_title();
+			System.out.println(a);
 			model.addAttribute("list", list);
 		}
 		
@@ -121,6 +117,28 @@ public class VideoController {
 			service.viewnumUpdate(video_id);
 		}
 		
+		@RequestMapping("sports/likeButton.do")
+		public void likeButton(UserLikeVO userLikeVO,Model model) {
+			int a = service.like(userLikeVO);
+			System.out.println("likebutton a값>>"+ a);
+			model.addAttribute("like", a);
+		}
+		
+		@RequestMapping("sports/dislikeButton.do")
+		public void dislikeButton(UserLikeVO userLikeVO,Model model) {
+			int a = service.dislike(userLikeVO);
+			System.out.println("likebutton a값>>"+ a);
+			model.addAttribute("like", a);
+		}
+		
+		//좋아요 테이블에 값대입
+		@RequestMapping("sports/makeLike.do")
+		public void makeLike(UserLikeVO userLikeVO,Model model) {
+			service.insertUserLike(userLikeVO);//like_index대입
+			int likeIndex = service.selectLikeindex(userLikeVO);
+			System.out.println("controller단 likeindex>>>> " +likeIndex);
+			model.addAttribute("like", likeIndex);
+		}
 		
 		
 		

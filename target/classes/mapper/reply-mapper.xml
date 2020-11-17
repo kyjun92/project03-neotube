@@ -19,6 +19,7 @@
 	<select id="ho" parameterType="ReplyVO" resultType="Integer">
 		select count(user_id) from reply
 	</select>
+	<!-- 게시판 넘기기 -->
     <select id="next" parameterType="ReplyVO" resultType="ReplyVO" >
     	select * from reply where 
     </select>

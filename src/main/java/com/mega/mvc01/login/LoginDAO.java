@@ -70,9 +70,10 @@ public class LoginDAO {
 		return vo;
 	}
 
+
 	// pw 찾기 중복확인
 	public int select5(UserVO loginvo) {
-		UserVO vo = mybatis.selectOne("user.select5", loginvo);
+		UserVO vo = mybatis.selectOne("user.delete", loginvo);
 		int result = 0;
 		if (vo != null) {
 			result = 1;
