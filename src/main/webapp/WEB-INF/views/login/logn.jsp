@@ -33,6 +33,8 @@
 
 						alert("로그인성공");
 						
+	    	            opener.document.location.reload();
+
 	    	            window.close(history.go());
 					} else {
 						alert("아이디 비밀번호 확인해주세요");

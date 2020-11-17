@@ -22,6 +22,7 @@
 	
 	$(function() {
 		
+		login_check()
 		if(userId != 'null'){ // 로그인 된 상태
 			like = ${like}					//페이지 시작시 가져온 좋아요 정보를 저장 (좋아요 체크 변경시 변수 변경)
 			likeOrigin = like;				//페이지 시작시 가져온 좋아요 정보를 저장
@@ -106,22 +107,18 @@
 		
 		}else{ // 로그인이 안된 상태
 			$('#likeButton').click(function() {		// 좋아요 버튼 클릭 시 변경 함수
-				location.href="login/logn.do"
+				open_login()
+					
 			})
 			$('#dislikeButton').click(function() {		//싫어요 버튼 클릭 시 변경 함수
-				location.href="login/logn.do"
+				open_login()
 			})
 			
-			$('#subscribe').ready(function() {
 			
-					$('#subscribe').text('구독')
-					$('#subscribe').css('background','#cc0000')
-				
-			}) //ready
 	
 			$('#subscribe').click(function() {
 				console.log("클릭")
-				location.href="login/logn.do"
+				open_login();
 			}) //click
 		}
 		
@@ -140,6 +137,27 @@
 			$('#dislikeButton').css('background', '#fff');
 			
 		}
+	}
+	
+	function login_check() {
+		if(userId == 'null'){      
+			 $("#logout").css('display','none'); 
+			 $("#login").css('display','inline-block');
+		}else{                                
+			$("#login").css('display','none'); 
+			$("#logout").css('display','inline-block');
+		}  
+	}
+	function open_login() {
+		window.open(href="login/logn.do", '_blank', 'width=900px,height=700px,toolbars=no,scrollbars=no'); 
+	}
+	function logout_func() {
+		$.ajax({
+			url : "login/logout.do",
+			success: function(result) {
+				location.reload()
+			}
+		})
 	}
 	
 	
@@ -163,7 +181,8 @@
 					<li><a href="cooking_index.jsp">Cooking</a></li>
 					<li><a href="kids_index.jsp">Kids</a></li>
 					<li><a href="client/client.do">Supports</a></li>
-					<li><a href="login/logn.do">Login</a></li>
+					<li><a onclick="open_login()" id='login'>Login</a></li>
+					<li><a onclick="logout_func()"  id="logout">logout</a></li>
 				</ul>
 			</div>
 		</nav>

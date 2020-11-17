@@ -30,13 +30,8 @@
 			$(".main_frame *").remove();
 			
 		})
-		 if(userId == 'null'){      
-			 $("#logout").css('display','none'); 
-			 $("#login").css('display','inline-block');
-		}else{                                
-			$("#login").css('display','none'); 
-			$("#logout").css('display','inline-block');
-		}   
+		login_check()
+		
 	})
 	
 	function aside_menu_button(x) {  // aside 버튼 css 변경
@@ -44,13 +39,13 @@
 		$(".aside_button").css("color", "#fff")
 		$("#aside"+x).css("background", "#fff")
 		$("#"+x).css("color", "#000")
-		if(userId == 'null'){
+		if(userId == 'null'){   // 로그오프인 상태
 			if(x>1 || x == 5){
-				location.href="login/logn.do"
+				open_login();
 			}else{
 				page_load(x)
 			}
-		}else{
+		}else{					// 로그인 상태
 			if(x==5){
 				location.href="http://127.0.0.1:8000/polls"				
 			}else{
@@ -90,6 +85,28 @@
 			}) // ajax
 		
 	} //page_load
+	function login_check() {
+		if(userId == 'null'){      
+			 $("#logout").css('display','none'); 
+			 $("#login").css('display','inline-block');
+		}else{                                
+			$("#login").css('display','none'); 
+			$("#logout").css('display','inline-block');
+		}  
+	}
+	function open_login() {
+		window.open(href="login/logn.do", '_blank', 'width=900px,height=700px,toolbars=no,scrollbars=no'); 
+		login_check()
+	}
+	function logout_func() {
+		$.ajax({
+			url : "login/logout.do",
+			success: function(result) {
+				location.reload()
+			}
+		})
+	}
+	  
 </script>
 <!-- 메인페이지 css -->
 </head>
@@ -111,8 +128,8 @@
 					<li><a href="cooking_index.jsp">Cooking</a></li>
 					<li><a href="kids_index.jsp">Kids</a></li>
 					<li><a href="client/client.do">Supports</a></li>
-					<li><a href="login/logn.do" onclick="window.open(this.href, '_blank', 'width=900px,height=700px,toolbars=no,scrollbars=no'); return false;" id="login">Login</a></li>
-					<li><a href="login/logout.do" id="logout">logout</a></li>
+					<li><a onclick="open_login()" id='login'>Login</a></li>
+					<li><a onclick="logout_func()"  id="logout">logout</a></li>
 				</ul>
 			</div>
 		</nav>
