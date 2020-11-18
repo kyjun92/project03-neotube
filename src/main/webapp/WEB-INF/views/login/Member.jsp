@@ -80,6 +80,7 @@
 
 						} else if(pw==pw1){ ///*  else if (condition) 
 						// 회원가입하는 페이지로!!
+						alert("회원가입 성공!")
 						location.href = '../login/insert.do?user_id=' + user_id
 								+ '&pw=' + pw + '&name=' + name + '&gender='
 								+ gender + '&birthday=' + birthday + '&tel='
@@ -128,7 +129,7 @@
 
 							<div class="form-label-group col-sm-9 col-md-9 col-lg-9 mx-auto">
 								<input type="text" id="name" name="name" class="form-control"
-									placeholder="Email address" required autofocus> <label
+									placeholder="Name" required autofocus> <label
 									for="inputEmail">이름</label>
 								<div id="d3" name="d3"></div>
 							</div>
@@ -150,14 +151,14 @@
 
 							<div class="form-label-group col-sm-9 col-md-9 col-lg-9 mx-auto">
 								<input type="text" id="birthday" name="birthday"
-									class="form-control" placeholder="Email address" required
+									class="form-control" placeholder="생년월일" required
 									autofocus> <label for="inputEmail">생년월일 </label>
 								<div id="d5" name="d5"></div>
 							</div>
 							<br>
 							<div class="form-label-group col-sm-9 col-md-9 col-lg-9 mx-auto">
 								<input type="text" id="tel" name="tel" class="form-control"
-									placeholder="Email address" required autofocus> <label
+									placeholder="Tel" required autofocus> <label
 									for="inputEmail">전화번호 </label>
 								<div id="d6" name="d6"></div>
 							</div>

@@ -36,10 +36,21 @@
 <script>
 var cate = '<%= request.getParameter("views")%>'
 
-function moving(){
+$(function() {
+	
 	if(cate == 'people'){
-		cate = 'kids'	;
+		cate = 'kids';
+	}else if(cate == 'music'){
+		cate = 'cooking';
 	}
+	
+	$('#reco').append("<h1>추천 카테고리 : <a href='#' onclick='moving()'>"+cate+"</a>(으)로 이동</h1>")
+}	
+)
+
+
+function moving(){
+	
 	location.href=cate+"_index.jsp";
 }
 am4core.ready(function() {
@@ -170,9 +181,10 @@ series.columns.template.column3D.strokeOpacity = 0.2;
 </head>
 <body>
 <!-- HTML -->
+<div id = "reco"></div>
 <div id="chartdiv"></div>
 <div id="chartdiv1"></div>
 <div id="chartdiv2"></div>
-<h1><a onclick="moving()">추천카테고리로 이동</a></h1>
+
 </body>
 </html>

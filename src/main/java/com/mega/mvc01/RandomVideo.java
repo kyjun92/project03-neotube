@@ -30,7 +30,7 @@ public class RandomVideo {
 		String[] v2 = new String[1000];
 		
 		for (int i = 0; i < 1000; i++) {
-			b = a.nextGaussian() * 10 + 50;
+			b = a.nextGaussian() + 50;
 			if (b > 100 || b < 1) {
 				continue;
 			}

@@ -62,6 +62,7 @@
 					page_index : x				// aside의 menu_index에 따라 불러오는 영상의 순서를 변경 >> aside_index를 controller로 보냄
 				},
 				success : function(json) { 					// 불러온 영상 list를 json의 형태로 반환받아
+					console.log(json)
 					for (var i = 0; i < json.length; i++) { // 순서에 받게 append로 main_frame에 출력
 						date = json[i].video_date			// datetime의 형태(yyyy-MM-dd HH:mm:ss)로 넘어온 String 값을
 						array = date.split(" ")				// 스플릿함수를 이용하여 시간부분은 잘라내고 사용 >> (yyyy-MM-dd)
@@ -155,9 +156,7 @@
 		<div id="aside5" class="aside_div" style="margin-left: -65px; margin-top: -15px;">
 			<a id = "5" class="aside_button" style="font-size: 30px;">추천</a>
 		</div>
-		<div style="margin-left: -65px; margin-top: -15px;">
-			<a href="randomInsert.game" style="font-size: 30px;">랜덤 아이디값 생성</a>
-		</div>
+		
 	</aside>
 	<!-- 본문 -->
 	<div class="main_page"></div>

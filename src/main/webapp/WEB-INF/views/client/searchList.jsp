@@ -55,7 +55,7 @@
 
 				<div class="navbar-nav ml-auto" style="margin-left: 300px">
 					<div class="nav-item active">
-						<a class="nav-link" href="../sports_index.jsp"><h3>메인</h3> <span
+						<a class="nav-link" href="../game_index.jsp"><h3>메인</h3> <span
 							class="sr-only">(current)</span> </a>
 					</div>
 				</div>
