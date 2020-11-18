@@ -181,8 +181,8 @@
 					<li><a href="cooking_index.jsp">Cooking</a></li>
 					<li><a href="kids_index.jsp">Kids</a></li>
 					<li><a href="client/client.do">Supports</a></li>
-					<li><a onclick="open_login()" id='login'>Login</a></li>
-					<li><a onclick="logout_func()"  id="logout">logout</a></li>
+					<li><a style="cursor:pointer;" onclick="open_login()" id='login'>Login</a></li>
+					<li><a style="cursor:pointer;" onclick="logout_func()"  id="logout">logout</a></li>
 				</ul>
 			</div>
 		</nav>

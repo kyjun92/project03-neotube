@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-	<c:set var="id" value="kyjun92" scope="session"/> <!-- 세션 설정 (로그인 엮으면 지워야 됨) -->
+	<%-- <c:set var="id" value="kyjun92" scope="session"/> --%> <!-- 세션 설정 (로그인 엮으면 지워야 됨) -->
 <!DOCTYPE html>
 <html>
 <head>
@@ -12,7 +12,7 @@
 	src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script type="text/javascript">
 	
-	var userId = '<%=session.getAttribute("id") %>'   
+	var userId = '<%=session.getAttribute("user_id") %>'   
 	var page_index = <%=request.getParameter("page_i")%>
 	$(function() {
 		if(page_index == null){ 
@@ -27,6 +27,7 @@
 			$(".main_frame *").remove();
 			
 		})
+		login_check()
 	})
 	
 	function aside_menu_button(x) {  // aside 버튼 css 변경
@@ -36,7 +37,7 @@
 		$("#"+x).css("color", "#000")
 		if(userId == 'null'){
 			if(x>1 || x == 5){
-				location.href="login/logn.do"
+				open_login();
 			}else{
 				page_load(x)
 			}
@@ -45,14 +46,14 @@
 				location.href="http://127.0.0.1:8000/polls"				
 			}else{
 				page_load(x)
-			}
-		}
-	}
+			} // else2
+		} // else1
+	} // aside_menu_button()
 	
 	function page_load(x) {
-		if(userId == 'null'){		//로그인 상태 체크
+			
 			$.ajax({							// 메인페이지 로딩 시에 나열될 동영상 정보를 json으로 가져옴(로그인 안한 상태)
-				url : "cooking/select_main.cooking",		// 레코드가 없어 최신순으로 불러옴
+				url : "cooking/select_main2.cooking",		// 레코드가 없어 최신순으로 불러옴
 				data : {
 					page_index : x				// aside의 menu_index에 따라 불러오는 영상의 순서를 변경 >> aside_index를 controller로 보냄
 				},
@@ -71,46 +72,37 @@
 												+ "회 ㆍ "
 												+ array[0]
 												+ " </p></div></div>");
-					}
+					}//for
 					$(".video_frame").click(function() { // 영상 클릭 시 해당 영상 플레이 페이지로 넘어감
-						var videoId = $(this).attr('id');
-						location.href = "cooking/playingPage.cooking?videoId=" + videoId;
-					})
-				}
-			})
-		}else{
-			$.ajax({							// 메인페이지 로딩 시에 나열될 동영상 정보를 json으로 가져옴(로그인 상태)
-				url : "cooking/select_main.cooking",		// 레코드와 각종 정보 기반 추천 알고리즘 순으로 출력 (각자 수정해야되~)
-				data : {
-					page_index : x
-				},
-				success : function(json) {
-
-					console.log(json);
-					for (var i = 0; i < json.length; i++) {
-						date = json[i].video_date
-						array = date.split(" ")
-						$(".main_frame")
-								.append(
-										"<div id='"+json[i].video_id+"' class='video_frame'><div class='thumbnail_frame'><img width='100%' src='"
-												+ json[i].thumbnail
-												+ "'></div><div class='content_frame'><h2>"
-												+ json[i].video_title
-												+ "</h2><p>조회수 "
-												+ json[i].play_num
-												+ "회 ㆍ "
-												+ array[0]
-												+ " </p></div></div>");
-					}
-					$(".video_frame").click(function() { // 영상 클릭 시 해당 영상 플레이 페이지로 넘어감
-						var id = $(this).attr('id');		//아이디 값을 가지고 들어감
-						console.log(id);
-						location.href = "cooking/playingPage.cooking?videoId=" + id;
-					})
-				}
-			})
-		}
+						var id = $(this).attr('id');
+						location.href = "cooking/playingPage2.cooking?videoId=" + id;
+					})// click
+				} // success
+			}) // ajax
+	} //page_load
+	
+	function login_check() {
+		if(userId == 'null'){      
+			 $("#logout").css('display','none'); 
+			 $("#login").css('display','inline-block');
+		}else{                                
+			$("#login").css('display','none'); 
+			$("#logout").css('display','inline-block');
+		}  
 	}
+	function open_login() {
+		window.open(href="login/logn.do", '_blank', 'width=900px,height=700px,toolbars=no,scrollbars=no'); 
+		login_check()
+	}
+	function logout_func() {
+		$.ajax({
+			url : "cooking/errorMail.cooking",
+			success: function(result) {
+				location.reload()
+			}
+		})
+	}
+	
 </script>
 <!-- 메인페이지 css -->
 </head>
@@ -121,7 +113,7 @@
 		<nav class="nav_fix">
 			<div id="main_icon">
 				<h3>
-					<a href="game_index.jsp"><img id="logo"
+					<a href="cooking_index.jsp"><img id="logo"
 						src="resources/img/logo3.png" width=150 height=30.61></a>
 				</h3>
 			</div>
@@ -132,7 +124,8 @@
 					<li><a href="cooking_index.jsp">Cooking</a></li>
 					<li><a href="kids_index.jsp">Kids</a></li>
 					<li><a href="client/client.do">Supports</a></li>
-					<li><a href="login/logn.do">Login</a></li>
+					<li><a onclick="open_login()" id='login'>Login</a></li>
+					<li><a onclick="logout_func()"  id="logout">Logout</a></li>
 				</ul>
 			</div>
 		</nav>
@@ -156,7 +149,7 @@
 			<a id = "4" class="aside_button" style="font-size: 30px;">시청기록</a>
 		</div>
 		<div id="aside5" class="aside_div" style="margin-left: -65px; margin-top: -15px;">
-			<a id = "5" class="aside_button" style="font-size: 30px;">추천</a>
+			<a id = "5" class="aside_button" style="font-size: 30px;">x</a>
 		</div>
 	</aside>
 	<!-- 본문 -->
@@ -164,9 +157,7 @@
 	<!-- 영상 목록이 호출되는 메인프레임 -->
 	<div class="main_frame"
 		style="height: auto; overflow: hidden; width: 1950px; margin-left: 195px;">
-
 	</div>
-	
 
 </body>
 </html>

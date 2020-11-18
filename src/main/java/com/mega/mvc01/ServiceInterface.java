@@ -28,6 +28,8 @@ public interface ServiceInterface {
 	
 	int updateSubscibe(SubscribeVO vo);
 	
+	public String reco(String user_id);
+	
 	void random();
 	
 

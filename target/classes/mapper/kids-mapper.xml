@@ -1,25 +1,53 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="kids"><!-- 
-	public KidsVO one(String video_id);
-	public List<KidsVO> listByCategory(String category);
-	public List<KidsVO> listBySearch(String query);
-	public void upload(KidsVO vo); -->
-	<select id = "one" parameterType = "kidsVO" resultType = "kidsVO">	
-		select video_id, video_title, video_url, play_num, video_date, like_num, dislike_num, tag, category, video.channel_id, channel_title
+<mapper namespace="kids">
+	<select id = "kidsone" parameterType = "kidsVO" resultType = "kidsVO">
+	<!-- 동영상 1개 record 추출 -->	
+		select video_id, video_title, video_url, play_num, video_date, like_num,
+				dislike_num, tag, category, video.channel_id, channel_title
 		from video
 		inner join channel on video.channel_id = channel.channel_id
 		where video_id = #{video_id}
 	</select>
+	<select id = "listByCategoryNolimit" parameterType = "searcherVO" resultType="kidsVO">
+		select video_id, video_title, video_url, play_num, video_leng, video_date,
+				channel_title, thumbnail 
+		from video
+		inner join channel on video.channel_id = channel.channel_id
+		order by video_date desc, video_title asc
+	</select>
 	<select id = "listByCategory" parameterType = "searcherVO" resultType="kidsVO">
-		select video_id, video_title, video_url, play_num, video_leng, video_date, channel_title, thumbnail 
+	<!-- 동영상 전체 record 추출 -->
+		select video_id, video_title, video_url, play_num, video_leng, video_date,
+				channel_title, thumbnail 
 		from video
 		inner join channel on video.channel_id = channel.channel_id
 		order by video_date desc, video_title asc
 		limit #{start}, #{amount}
 	</select>
+	<select id = "listByPopular" parameterType = "searcherVO" resultType = "kidsVO">
+	<!-- 재생수, 좋아요수, 7일간의 재생수, 7일간의 댓글수를 기반으로 인기 점수 산출하여 정렬 -->
+		select video.video_id, video_title, video_url, play_num, video_leng, video_date,
+				channel_title, thumbnail
+		from video
+		inner join channel on video.channel_id = channel.channel_id
+		left outer join (select video_id, count(*) as c1
+						from reply
+						where `date` between date_sub(now(), interval 7 day) and now()
+						group by video_id) reply_count
+						on video.video_id = reply_count.video_id
+		left outer join (select video_id, count(*) as c2
+						from user_record
+						where `date` between date_sub(now(), interval 7 day) and now()
+						group by video_id) user_record_count
+						on video.video_id = user_record_count.video_id
+		order by (play_num + like_num * 100 + ifnull(c1,0) * 10000 + ifnull(c2,0) * 10) / datediff(now(), video_date) desc
+		limit #{start}, #{amount}
+	</select>
 	<select id = "listBySubscribe" parameterType = "searcherVO" resultType = "kidsVO">
-		select video_id, video_title, video_url, play_num, video_leng, video_date, video.channel_id, channel_title, thumbnail 
+	<!-- 구독한 채널 영상 받아오기 -->
+		select video_id, video_title, video_url, play_num,
+				video_leng, video_date, video.channel_id, channel_title, thumbnail 
 		from video
 		inner join channel on video.channel_id = channel.channel_id
 		inner join (select * from subscribe where user_id='admin' and subscribe= 1 )subscribe_sq
@@ -28,6 +56,7 @@
 		limit #{start}, #{amount}
 	</select>
 	<select id = "listByLike" parameterType="searcherVO" resultType="kidsVO">
+	<!-- 좋아요한 영상 받아오기 -->
 		select video.video_id, video_title, video_url, play_num, video_leng, video_date, channel_title, thumbnail 
 		from video
 		inner join channel on video.channel_id = channel.channel_id
@@ -50,10 +79,6 @@
 			on user_record_sq.video_id = video.video_id
 		limit #{start}, #{amount}
 	</select>
-	<select id = "listBySearch" resultType="kidsVO">
-	</select>
-	<insert id = "upload" parameterType = "kidsVO">
-	</insert>
 	<insert id = "addHistory" parameterType = "userControlVO">
 		insert into user_record
 		values (#{user_id}, #{video_id}, #{date})
@@ -67,7 +92,7 @@
 		values (#{user_id}, #{video_id}, 2)
 	</insert>
 	<select id = "getLike" parameterType = "userControlVO" resultType="integer">
-		select `like` from user_like
+		select like_index from user_like
 		where user_id = #{user_id} and video_id = #{video_id}
 	</select>
 	<delete id = "likeCancel" parameterType = "userControlVO">
@@ -94,21 +119,21 @@
 		set dislike_num = dislike_num - 1
 		where video_id = #{video_id}
 	</update>
-	<select id = "getSubscribeOne" parameterType = "userControlVO" resultType = "boolean">
+	<select id = "getSubscribeOne" parameterType = "UserControlVO" resultType = "boolean">
 		select subscribe
 		from subscribe
 		where user_id = #{user_id} and channel_id = #{channel_id}
 	</select>
-	<insert id = "setSubscribe" parameterType="userControlVO">
+	<insert id = "setSubscribe" parameterType="UserControlVO">
 		insert into subscribe
 		values(#{user_id}, #{channel_id}, true)
 	</insert>
-	<update id = "doSubscribe" parameterType="userControlVO">
+	<update id = "doSubscribe" parameterType="UserControlVO">
 		update subscribe
 		set subscribe = true
 		where user_id = #{user_id} and channel_id = #{channel_id} 
 	</update>
-	<update id = "undoSubscribe" parameterType="userControlVO">
+	<update id = "undoSubscribe" parameterType="UserControlVO">
 		update subscribe
 		set subscribe = false
 		where user_id = #{user_id} and channel_id = #{channel_id} 
@@ -118,16 +143,16 @@
 		from reply
 		where reply_id like concat(#{category}, "_%")
 	</select>
-	<!-- <select id = "getReply" parameterType = "replyVO1" resultType = "replyVO1">
+	<select id = "getReply" parameterType = "kidsReplyVO" resultType = "kidsReplyVO">
 		select user_id, content, date
 		from reply
 		where video_id = #{video_id}
 		order by date desc
 	</select> 
-	<insert id = "postReply" parameterType = "replyVO1">
+	<insert id = "postReply" parameterType = "kidsReplyVO">
 		insert into reply
 		value (#{reply_id}, #{user_id}, #{video_id}, null, #{content}, #{date})
-	</insert> -->
+	</insert>
 	<select id = "getCategory" parameterType = "kidsVO" resultType = "string">
 		select category
 		from video

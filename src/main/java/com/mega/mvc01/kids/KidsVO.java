@@ -3,9 +3,7 @@ package com.mega.mvc01.kids;
 import java.util.Date;
 
 //영상 1개 가져오기 VO
-
-public class KidsVO {
-
+public class KidsVO implements Comparable<KidsVO>{
 	String video_id;
 	String video_title;
 	String video_url;
@@ -19,6 +17,7 @@ public class KidsVO {
 	String channel_id;
 	String thumbnail;
 	String channel_title;
+	double pearson;
 	public String getVideo_id() {
 		return video_id;
 	}
@@ -98,9 +97,16 @@ public class KidsVO {
 	public void setChannel_title(String channel_title) {
 		this.channel_title = channel_title;
 	}
-	@Override
-	public String toString() {
-		return "KidsVO [video_id=" + video_id + ", video_title=" + video_title + ", video_url=" + video_url + "]";
+	public double getPearson() {
+		return pearson;
 	}
-	
+	public void setPearson(double pearson) {
+		this.pearson = pearson;
+	}
+	@Override
+	public int compareTo(KidsVO arg0) {
+		if(arg0.pearson > this.pearson) return 1;
+		else if (arg0.pearson < this.pearson) return -1;
+		else return 0;
+	}
 }

@@ -1,7 +1,7 @@
 <%@page import="com.mega.mvc01.kids.KidsVO"%><%@page import="java.util.List"%><%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%><%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %><%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <c:forEach items="${bag}" var="vo">	
-	<div class="item" onclick="location.href='video?id=${ vo.video_id }'">
+	<div class="item" onclick="location.href='video?id=${ vo.video_id }&user_id=${ sessionScope.id }'">
 		<input name="" value="" hidden="hidden">
 		<div class="item-thumbnail">
 			<img class="thumbnail" src="${ vo.thumbnail }">

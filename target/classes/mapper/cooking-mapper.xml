@@ -1,53 +1,217 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="cooking">
+
+	<!-- 홈에서 비디오 목록을 가져오는 구문 -->
 	<select id="cooking_list" resultType="videoVO">
 		select video_id,
 		video_title, play_num, video_date, channel_id, thumbnail from video
 		where category="cooking"
 	</select>
-	
+
+	<!-- Read :: 인기 페이지 동영상 목록 호출 -->
+	<select id="popular_list" resultType="videoVO">
+		select video_id,
+		video_title, play_num, video_date, channel_id, thumbnail from video
+		where category="cooking" order by play_num desc
+	</select>
+
+	<!-- Read :: 구독페이지 동영상 목록 호출 -->
+	<select id="subscribe_list" parameterType="String"
+		resultType="videoVO">
+		select video_id,
+		video_title, play_num, video_date,
+		channel_id, thumbnail from video where channel_id
+		in ( select
+		channel_id
+		from subscribe where user_id = #{user_id}
+		and subscribe
+		=true) order
+		by video_date desc
+	</select>
+
+	<!-- Read :: 좋아요한페이지 동영상 목록 호출 -->
+	<select id="likeVideo_list" parameterType="String"
+		resultType="videoVO">
+		select video_id,
+		video_title, play_num, video_date,
+		channel_id, thumbnail from video
+		where video_id in (
+		select video_id
+		from user_like
+		where user_id = #{user_id} and like_index =1) order by
+		video_date desc;
+	</select>
+
+	<!-- Read :: 시청했던 동영상 목록 호출 -->
+	<select id="userRecordVideo_list" resultType="videoVO">
+		select v.video_id,
+		v.video_title, v.play_num, v.video_date, v.channel_id, v.thumbnail,
+		max(ur.record_date)
+		from video v join user_record ur
+		on v.video_id =
+		ur.video_id group by video_id
+		order by max(ur.record_date) desc
+	</select>
+
+	<!-- 비디오 아이디를 이용하여 해당 아이디의 비디오의 정보 전체를 가져오는 구문 -->
 	<select id="playingVideo" parameterType="String"
 		resultType="videoVO">
 		select * from video where video_id = #{video_id}
 	</select>
-	
+
+	<!-- 가져온 비디오의 정보에 있는 채널의 아이디를 이용해서 채널의 정보를 가져오는 구문 -->
 	<select id="selectChannel" parameterType="String"
 		resultType="channelVO">
 		select * from channel where channel_id = #{channel_id}
 	</select>
 
+	<!-- Read :: 재생중인 동영상의 non/like/dislike 정보 -->
+	<select id="selectLike" parameterType="userLikeVO"
+		resultType="userLikeVO">
+		select * from user_like where user_id = #{user_id} and
+		video_id = #{video_id}
+	</select>
+
+	<!-- Create :: 재생중인 동영상의 row가 table에 없을 경우 like=non 추가 -->
+	<insert id="insertUserLike" parameterType="userLikeVO">
+		insert into user_like
+		values(#{user_id},#{video_id},'0')
+	</insert>
+
+	<!-- 영상을 재생하기 위해서 들어가면 조회수를 1 증가시켜주는 구문 -->
 	<update id="updatePlaynum">
-		update video set play_num = play_num+1 where video_id =
+		update video set play_num = play_num+1 where video_id
+		=
 		#{video_id}
 	</update>
 
+	<!-- 재생 목록에 들어가면 사용자가 해당 비디오를 보았다를 현재 시간으로 등록해주는 구문 -->
 	<insert id="insertUserRecord" parameterType="userRecordVO">
 		insert into
 		user_record values(#{user_id},#{video_id},now())
 	</insert>
-	
-	<select id="selectSubscribe" parameterType="subscribeVO" resultType="Integer">
-		select count(*) from subscribe where user_id = #{user_id} and channel_id = #{channel_id}
+
+	<!-- Update :: 수정한 like 정보를 수정 -->
+	<update id="updateLike" parameterType="userLikeVO">
+		update user_like set
+		like_index = #{like_index} where user_id = #{user_id} and video_id =
+		#{video_id}
+	</update>
+
+	<!-- Update :: 수정한 like 정보로 video table의 좋아요/싫어요 숫자 수정 -->
+	<update id="updateLikenum" parameterType="java.util.HashMap">
+		update video set
+		like_num = like_num ${like}, dislike_num = dislike_num ${dislike}
+		where video_id = #{videoId}
+	</update>
+
+	<!-- 구독버튼 사용 sql -->
+
+	<!-- 사용자의 아이디와 비디오의 아이디를 갖고 있는 구독 정보의 개수를 판단 -->
+	<!-- 후에 목록의 개수가 0개면 정보를 업데이트 해주기 위해서 구독이 안되있다로 데이터 정보를 삽입할 예정 -->
+	<select id="selectSubscribe" parameterType="subscribeVO"
+		resultType="Integer">
+		select count(*) from subscribe where user_id = #{user_id}
+		and channel_id = #{channel_id}
 	</select>
 
-	<select id="selectSubscribe2" parameterType="subscribeVO" resultType="Integer">
-		select subscribe from subscribe where user_id = #{user_id} and channel_id = #{channel_id}
+	<!-- 사용자가 해당 동영상을 구독하고 있는지 아닌지 판단하기 위해서 검색을 해보는 구문 -->
+	<select id="selectSubscribe2" parameterType="subscribeVO"
+		resultType="Integer">
+		select subscribe from subscribe where user_id = #{user_id}
+		and channel_id = #{channel_id}
 	</select>
-	
+
+	<!-- 사용자가 해당 동영상의 구독 정보가 아예 없으면 일단 데이터를 생성해주기 위해서 사용하는 구문 -->
 	<insert id="insertSubscribe" parameterType="subscribeVO">
-		insert into subscribe values (#{user_id}, #{channel_id}, 0)
+		insert into subscribe
+		values (#{user_id}, #{channel_id}, false)
 	</insert>
-	
+
+	<!-- 구독 버튼을 누를 경우 정보를 업데이트 시키기 위해서 사용하는 구문 -->
 	<update id="updateSubscribe" parameterType="subscribeVO">
-		update subscribe set subscribe = #{subscribe} where user_id = #{user_id} and channel_id = #{channel_id}
+		update subscribe set
+		subscribe = #{subscribe} where user_id = #{user_id} and channel_id =
+		#{channel_id}
 	</update>
-	
-	<!-- <insert id="insert" parameterType="userVO"> insert into member values(#{id}, 
-		#{pw}, #{name}, #{tel}) </insert> <update id="update" parameterType="userVO"> 
-		update member set tel = #{tel} where id = #{id} </update> <delete id="delete" 
-		parameterType="userVO"> delete from member where id = #{id} </delete> <select 
-		id="one" parameterType="userVO" resultType="userVO"> select * from member 
-		where id = #{id} </select> <select id="list" resultType="userVO"> select 
-		* from member </select> -->
+
+	<!-- 사이드바에서 구독 버튼 누를 때 서브쿼리 select문 사용자의 아이디를 이용하여 구독된 채널의 영상의 정보를 가져오는 
+		구문 -->
+	<!-- <select id="subscribe_list" parameterType="String"
+		resultType="videoVO">
+		select * from video where channel_id in ( select channel_id
+		from subscribe where user_id = #{user_id} and subscribe = true ) order
+		by video_date desc
+	</select> -->
+
+	<!-- 알고리즘 사용 sql -->
+
+	<!-- 알고리즘 계산에 필요한 비디오의 정보만 가져오는 구문 -->
+	<select id="selectAlgoData" resultType="videoVO">
+		select video_id, play_num, video_date, like_num, dislike_num, channel_id from video where category = "cooking"
+	</select>
+
+	<!-- 해당 사용자의 전체 시청기록의 수를 자겨오는 구문 -->
+	<select id="selectCountRecord" parameterType="String"
+		resultType="Integer">
+		select count(video_id) from user_record where user_id =
+		#{user_id}
+	</select>
+
+	<!-- 쿠킹카테고리에 있는 비디오의 채널목록을 채널의 중복을 제거하고 가져오는 구문 -->
+	<select id="selectCookingChannel" resultType="SubscribeVO">
+		select channel_id
+		from video where category = "cooking"
+		group by channel_id
+	</select>
+
+	<!-- 사용자가 시청한 동영상 아이디 목록으로 채널의 아이디를 중복을 제거해서 해당 채널의 동영상들의 시청횟수를 가져오는 구문 -->
+	<select id="selectRecordChannel" parameterType="String"
+		resultType="SubscribeVO">
+		select channel_id from video where
+		video_id in (select
+		video_id from user_record where user_id =
+		#{user_id} GROUP by video_id)
+		GROUP by channel_id;
+	</select>
+	<select id="selectRecordChannel2" parameterType="String"
+		resultType="Integer">
+		select count(channel_id) from video where
+		video_id in
+		(select video_id from user_record where user_id =
+		#{user_id} GROUP by
+		video_id) GROUP by channel_id;
+	</select>
+
+	<!-- 사용자의 나이를 가져오는 구문 -->
+	<select id="selectOneAge" parameterType="String"
+		resultType="String">
+		select birthday from user where user_id = #{user_id}
+	</select>
+
+	<!-- 사용자와 전체 유저의 나이를 비교하기 전체 나이를 가져오는 구문 -->
+	<select id="selectAllAge" resultType="userVO">
+		select u.user_id,
+		u.birthday from 'user' u where user_id in (select user_id from
+		user_record group by user_id)
+	</select>
+
+	<!-- 알고리즘 적용후 나온 값을 통해 비디오 아이디를 정렬하고 비디오 아이디 하나하나 넣어, 내용을 검색해서 가져오는 구문 -->
+	<select id="selectFinalVideo" parameterType="String"
+		resultType="videoVO">
+		select video_id, video_title, play_num, video_date,
+		channel_id, thumbnail from video where video_id = #{videoId}
+	</select>
+
+	<!-- 메일보내기 메일보내기 메일보내기 메일보내기 메일보내기 메일보내기 메일보내기 메일보내기 메일보내기 메일보내기 메일보내기 메일보내기 
+		메일보내기 -->
+
+	<!-- 로그아웃할 때 검사를 해서 해당 유저가 같은 날에 같은 비디오 아이디로 카운트 횟수가 5회 이상이면 오류라고 보낼 구문 -->
+	<select id="errorVideoIdList" parameterType="userRecordVO"
+		resultType="Integer">
+		select count(video_id) from user_record where user_id =
+		#{user_id} and record_date like #{record_date}% group by video_id
+	</select>
+
 </mapper>

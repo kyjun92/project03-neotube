@@ -11,6 +11,7 @@
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
 <link rel="stylesheet" href="<c:url value="/resources/css/index_page.css?after" />">
 <link rel="stylesheet" href="<c:url value="/resources/css/video.css?after" />" type="text/css" />
+<link rel="stylesheet" href="<c:url value="/resources/css/nextvideo.css?after" />" type="text/css" />
 </head>
 <body>
 	<!-- 상단 네비게이션 -->
@@ -98,7 +99,7 @@
 								var="db"
 							/>
 							<sql:query var="like_type" dataSource="${db}">
-								select `like` from user_like
+								select like_index from user_like
 								where user_id = '${sessionScope.id}' and video_id = '${video.video_id}'
 							</sql:query>
 							<sql:query var="is_subscribed" dataSource="${db}">
@@ -168,7 +169,7 @@
 			</div>
 			<div class="next-video-container">
 			    <h3>다음 동영상</h3>
-		    	
+
 			</div>
 		</div>
 	</div>
@@ -176,11 +177,14 @@
 <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
-<!--  <script src="<c:url value="/resources/video.js?after" />"></script> -->
-<script src="<c:url value="/resources/js/video.js" />"></script>
 <script>
+$(function(){
 	user_id = "${sessionScope.id}"
 	video_id = "${video.video_id}"
 	channel_id = "${video.channel_id}"
+	video_leng = "${video.video_leng}"
+})
 </script>
+<script src="<c:url value="/resources/js/video.js?after=1" />"></script>
+<script src="<c:url value="/resources/js/nextvideo.js?after" />"></script>
 </html>

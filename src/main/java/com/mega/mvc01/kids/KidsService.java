@@ -1,13 +1,24 @@
 package com.mega.mvc01.kids;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
+import org.bson.Document;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.mongodb.client.MongoClient;
+import com.mongodb.client.MongoClients;
+import com.mongodb.client.MongoCollection;
+import com.mongodb.client.MongoDatabase;
+
 @Service
 public class KidsService {
-
+	
 	@Autowired
 	KidsDAO dao;
 
@@ -17,6 +28,14 @@ public class KidsService {
 
 	public List<KidsVO> listByCategory(SearcherVO vo) {
 		return dao.listByCategory(vo);
+	}
+	
+	public List<KidsVO> listByTracker(SearcherVO vo) {
+		return dao.listByTracker(vo);
+	}
+	
+	public List<KidsVO> listByPopular(SearcherVO vo) {
+		return dao.listByPopular(vo);
 	}
 	
 	public List<KidsVO> listBySubscribe(SearcherVO vo) {
@@ -31,15 +50,6 @@ public class KidsService {
 		return dao.listByHistory(vo);
 	}
 
-	public List<KidsVO> listBySearch(String query) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	public void upload(KidsVO vo) {
-		// TODO Auto-generated method stub
-
-	}
 	
 	public int addHistory(UserControlVO vo) {
 		vo.setDate(new java.util.Date());
@@ -93,7 +103,6 @@ public class KidsService {
 	}
 	
 	public String subscribe(UserControlVO vo) {
-		System.out.println(vo);
 		Boolean did = dao.getSubscribe(vo);
 		if (did == null) {
 			dao.setSubscribe(vo);
@@ -125,8 +134,64 @@ public class KidsService {
 		return vo;
 	}
 
-
-//	public List<KidsVO> nextVideoList() {
-//		return dao.listByCategory(vo);
-//	}
+	public Map<String,Double> getPearsonList(String user_id) {
+		//몽고DB에 접속
+		MongoClient mongoClient = MongoClients.create("mongodb+srv://root:1234@neotubekids.e68cc.mongodb.net/neotube?retryWrites=true&w=majority");
+		MongoDatabase database = mongoClient.getDatabase("neotube");
+		MongoCollection<Document> collection = database.getCollection("neotube");
+		
+		//리스트 받아와서 나의 트래커 정보와 '남들은 봤는데 내가 아직 안 본' 영상 셋 추출
+		//내 트래커 정보가 없을 경우 실행하지 않고 그냥 종료
+		Document myDoc = null;
+		List<Document> foundDocument = collection.find().into(new ArrayList<Document>());
+		Set<String> columns = new HashSet<String>();
+		for(Document doc: foundDocument) {
+			columns.addAll(doc.keySet());
+			if(doc.containsValue(user_id)) myDoc = doc;
+		}
+		if(myDoc == null) return null;
+		columns.remove("user_id");
+		columns.remove("_id");
+		columns.removeAll(myDoc.keySet());
+		
+		//pearson coefficient를 계산하여 맵에 넣기
+		Map<String,Double> pearson = new HashMap<String,Double>();
+		for(Document yourDoc : foundDocument) {
+			if(yourDoc.getString("user_id").equals(myDoc.getString("user_id"))) continue;
+			double sx=0, sy=0, sx2=0, sy2=0, sxy=0;
+			int count = 0;
+			Set<String> column = new HashSet<String>();
+			column.addAll(myDoc.keySet());
+			for(String col : column) {
+				if(col.equals("user_id") || col.equals("_id")) continue;
+				if(yourDoc.containsKey(col)) {
+					double x = myDoc.getDouble(col);
+					double y = yourDoc.getDouble(col);
+					sx += x;
+					sy += y;
+					sx2 += x * x;
+					sy2 += y * y;
+					sxy += x * y;
+					count++;
+				}
+			}
+			double dc = (double)count;
+			double p = (sxy - (sx * sy / dc)) / Math.sqrt((sx2 - (sx * sx / dc)) * (sy2 - (sy * sy / dc)));
+			if(p >= 0) pearson.put(yourDoc.getString("user_id"), p);
+		}
+		
+		//pearson 기반으로 안 본 영상들의 예상평점 예상해보기
+		if(pearson.isEmpty()) return null;
+		Map<String,Double> predictedValue = new HashMap<String,Double>();
+		for( String key : columns ) {
+			double sum = 0;
+			for( Document yourDoc : foundDocument ) {
+				if(yourDoc.getString("user_id").equals(myDoc.getString("user_id"))) continue;
+				if(yourDoc.containsKey(key)) sum += yourDoc.getDouble(key);
+			}
+			predictedValue.put(key, sum / foundDocument.size());
+		}
+		mongoClient.close();
+		return predictedValue;
+	}
 }

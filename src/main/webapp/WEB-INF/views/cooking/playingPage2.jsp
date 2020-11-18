@@ -6,12 +6,12 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
-<link rel="stylesheet" href="resources/css/index_page.css">
+<link rel="stylesheet" href="../resources/css/index_page.css">
 <script
 	src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script type="text/javascript">
 
-	var userId = '<%=session.getAttribute("id")%>' // 세션에 잡혀있는 userId를 저장할 변수
+	var userId = '<%=session.getAttribute("user_id")%>' // 세션에 잡혀있는 userId를 저장할 변수
 	var video_id = '${videoVO.video_id}'  //비디오 id를 저장할 변수
 	var like_num = ${videoVO.like_num } // 좋아요수를 저장할 변수 
 	var dislike_num = ${videoVO.dislike_num } // 싫어요수를 저장할 변수
@@ -22,6 +22,7 @@
 	
 	$(function() {
 		
+		login_check()
 		if(userId != 'null'){ // 로그인 된 상태
 			like = ${like}					//페이지 시작시 가져온 좋아요 정보를 저장 (좋아요 체크 변경시 변수 변경)
 			likeOrigin = like;				//페이지 시작시 가져온 좋아요 정보를 저장
@@ -30,7 +31,7 @@
 			$(window).on('beforeunload',function() { // 페이지 나갈 때, 변경 된 좋아요 정보 DB update
 				if(like != likeOrigin){
 					$.ajax({
-						url : "updateSuscribe.cooking",
+						url : "updateLike2.cooking",
 						data : {
 							videoId : video_id,
 							like : like,
@@ -78,7 +79,6 @@
 				likeCheck(like);						// 버튼의 css 변경 함수 실행
 			})
 		
-			
 			/* 구독 버튼 함수 */
 			$('#subscribe').ready(function() { 
 				if (sub == 1) {
@@ -93,7 +93,7 @@
 			$('#subscribe').click(function() {
 				console.log("클릭")
 				$.ajax({
-					url: "updateSuscribe.cooking",
+					url: "updateSuscribe2.cooking",
 					data: {
 						channelId: channelId,
 					},
@@ -103,30 +103,18 @@
 					}) //success
 				}) //ajax
 			}) //click
-		
 		}else{ // 로그인이 안된 상태
 			$('#likeButton').click(function() {		// 좋아요 버튼 클릭 시 변경 함수
-				location.href="login/logn.do"
+				open_login()
 			})
 			$('#dislikeButton').click(function() {		//싫어요 버튼 클릭 시 변경 함수
-				location.href="login/logn.do"
+				open_login()
 			})
-			
-			$('#subscribe').ready(function() {
-			
-					$('#subscribe').text('구독')
-					$('#subscribe').css('background','#cc0000')
-				
-			}) //ready
-	
 			$('#subscribe').click(function() {
 				console.log("클릭")
-				location.href="login/logn.do"
+				open_login();
 			}) //click
 		}
-		
-		
-		
 	})
 	function likeCheck(x) {	// like_index에 따라 css 변경하는 함수
 		if (like == 1) { // 페이지 시작시 좋아요 정보에 따라 좋아요/싫어요의 버튼 활성화 체크
@@ -138,10 +126,29 @@
 		}else{
 			$('#likeButton').css('background', '#fff');
 			$('#dislikeButton').css('background', '#fff');
-			
 		}
 	}
 	
+	function login_check() {
+		if(userId == 'null'){      
+			 $("#logout").css('display','none'); 
+			 $("#login").css('display','inline-block');
+		}else{                                
+			$("#login").css('display','none'); 
+			$("#logout").css('display','inline-block');
+		}  
+	}
+	function open_login() {
+		window.open(href="login/logn.do", '_blank', 'width=900px,height=700px,toolbars=no,scrollbars=no'); 
+	}
+	function logout_func() {
+		$.ajax({
+			url : "cooking/errorMail.cooking",
+			success: function(result) {
+				location.reload()
+			}
+		})
+	}
 	
 </script>
 
@@ -152,18 +159,18 @@
 		<nav class="nav_fix">
 			<div id="main_icon">
 				<h3>
-					<a href="game_index.jsp"><img id="logo"
-						src="resources/img/logo3.png" width=150 height=30.61></a>
+					<a href="cooking_index.jsp"><img id="logo"
+						src="../resources/img/logo3.png" width=150 height=30.61></a>
 				</h3>
 			</div>
 			<div id="nav_category">
 				<ul>
-					<li><a href="sports_index.jsp">Sports</a></li>
-					<li><a href="game_index.jsp">Games</a></li>
-					<li><a href="cooking_index.jsp">Cooking</a></li>
-					<li><a href="kids_index.jsp">Kids</a></li>
-					<li><a href="client/client.do">Supports</a></li>
-					<li><a href="login/logn.do">Login</a></li>
+					<li><a href="../sports_index.jsp">Sports</a></li>
+					<li><a href="../game_index.jsp">Games</a></li>
+					<li><a href="../cooking_index.jsp">Cooking</a></li>
+					<li><a href="../kids_index.jsp">Kids</a></li>
+					<li><a onclick="open_login()" id='login'>Login</a></li>
+					<li><a onclick="logout_func()"  id="logout">Logout</a></li>
 				</ul>
 			</div>
 		</nav>
@@ -173,22 +180,22 @@
 		<!-- 각 메뉴의 인덱스 값을 파라미터로 보냄 -->
 		<!-- 메뉴의 인덱스값을 index페이지에서 받아 선택한 메뉴를 출력 -->
 		<div style="margin-left: -65px; margin-top: -15px;">
-			<a href="game_index.jsp?page_i='0'" style="font-size: 30px;">홈</a>
+			<a href="../cooking_index.jsp?page_i='0'" style="font-size: 30px;">홈</a>
 		</div>
 		<div style="margin-left: -65px; margin-top: -15px;">
-			<a href="game_index.jsp?page_i='1'" style="font-size: 30px;">인기</a>
+			<a href="../cooking_index.jsp?page_i='1'" style="font-size: 30px;">인기</a>
 		</div>
 		<div style="margin-left: -65px; margin-top: -15px;">
-			<a href="game_index.jsp?page_i='2'" style="font-size: 30px;">구독</a>
+			<a href="../cooking_index.jsp?page_i='2'" style="font-size: 30px;">구독</a>
 		</div>
 		<div style="margin-left: -65px; margin-top: -15px;">
-			<a href="game_index.jsp?page_i='3'" style="font-size: 30px;">좋아요한 동영상</a>
+			<a href="../cooking_index.jsp?page_i='3'" style="font-size: 30px;">좋아요한 동영상</a>
 		</div>
 		<div style="margin-left: -65px; margin-top: -15px;">
-			<a href="game_index.jsp?page_i='4'" style="font-size: 30px;">시청기록</a>
+			<a href="../cookinge_index.jsp?page_i='4'" style="font-size: 30px;">시청기록</a>
 		</div>
 		<div id="aside5" class="aside_div" style="margin-left: -65px; margin-top: -15px;">
-			<a href="game_index.jsp?page_i='5'" style="font-size: 30px;">추천</a>
+			<a href="#'" style="font-size: 30px;">x</a>
 		</div>
 	</aside>
 	<!-- 본문 -->
@@ -222,13 +229,13 @@
 						<div id="likeButton"
 							style="cursor: pointer;margin-top: 120px; font-size: 20px; font-weight: bolder;">
 							<img style="fill: #065fd4;" width="30px" alt=""
-								src="./resources/img/thumbs-up.png"> <span id="likeNum">${videoVO.like_num }</span>
+								src="../resources/img/thumbs-up.png"> <span id="likeNum">${videoVO.like_num }</span>
 						</div>
 					</div>
 					<div>
 						<div id="dislikeButton"
 							style="cursor: pointer;margin-top: 120px; font-size: 20px; font-weight: bolder;">
-							<img width="30px" alt="" src="./resources/img/thumb-down.png">
+							<img width="30px" alt="" src="../resources/img/thumb-down.png">
 							<span id="dislikeNum">${videoVO.dislike_num }</span>
 						</div>
 					</div>

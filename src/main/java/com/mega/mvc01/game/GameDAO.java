@@ -11,6 +11,7 @@ import org.springframework.stereotype.Repository;
 import com.mega.mvc01.ChannelVO;
 import com.mega.mvc01.DAOInterface;
 import com.mega.mvc01.RandomVideo;
+import com.mega.mvc01.RecoVO;
 import com.mega.mvc01.SubscribeVO;
 import com.mega.mvc01.UserLikeVO;
 import com.mega.mvc01.UserRecordVO;
@@ -21,13 +22,19 @@ public class GameDAO implements DAOInterface {
 
 	@Autowired
 	SqlSessionTemplate mybatis;
+	
+	@Autowired
+	RandomVideo ran;
 
 	@Override
 	public List<VideoVO> select_main(String userId, int page_index) {
 		List<VideoVO> list = null;
 		
 		if(page_index == 0) {
-			list = mybatis.selectList("game.game_list");
+			if(userId.equals("null")) {
+				userId = "*";
+			}
+			list = mybatis.selectList("game.game_list",userId);
 		}else if(page_index == 1) {
 			list = mybatis.selectList("game.popular_list");
 		}else if(page_index == 2) {
@@ -151,9 +158,15 @@ public class GameDAO implements DAOInterface {
 		mybatis.update("cooking.updateSubscribe", vo);
 	}
 	
+	public String reco_r(String user_id) {
+		RecoVO vo = mybatis.selectOne("game.recommand", user_id);
+		String views = vo.getViews();
+		return views;
+	}
+	
 	public void random() {
-		RandomVideo r = new RandomVideo();
-		String[] vId = r.id();
+		
+		String[] vId = ran.id();
 		for (int i = 0; i < vId.length; i++) {
 			System.out.println(vId[i]);
 			mybatis.insert("game.randomRecord", vId[i]);

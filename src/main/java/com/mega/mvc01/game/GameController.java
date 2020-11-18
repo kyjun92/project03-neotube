@@ -11,20 +11,21 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.mega.mvc01.ChannelVO;
-import com.mega.mvc01.ConInterface;
 import com.mega.mvc01.ServiceInterface;
 import com.mega.mvc01.SubscribeVO;
 import com.mega.mvc01.UserLikeVO;
 import com.mega.mvc01.UserRecordVO;
 import com.mega.mvc01.VideoVO;
 
+import sun.print.resources.serviceui;
+
 @Controller
-public class GameController implements ConInterface {
+public class GameController {
 
 	@Autowired
 	ServiceInterface gameService; // 서비스단 싱글톤으로 호출
 
-	@Override
+	
 	@RequestMapping("select_main.game")
 	@ResponseBody // jackson lib를 이용하여 list를 json으로 변환하여 전달
 	public List<VideoVO> select_main2(int page_index, Model model, HttpSession session) {
@@ -36,7 +37,7 @@ public class GameController implements ConInterface {
 		return list;
 	}
 
-	@Override
+	
 	@RequestMapping("playingPage.game")
 	public void playingPage(String videoId, Model model, HttpSession session) {	// playing_page에 표시될 정보들을 불러옴
 		
@@ -64,7 +65,7 @@ public class GameController implements ConInterface {
 		}
 
 	}
-	@Override
+	
 	@RequestMapping("updateLike.game")
 	public void leavePlayingPage(String videoId, byte like, byte likeOrigin, Model model, HttpSession session) {
 		// 페이지를 나갈 때, 변경된 좋아요 정보 수정
@@ -83,7 +84,7 @@ public class GameController implements ConInterface {
 	}
 	
 	// 수정되는 구독정보를 update하는 controller
-	@Override
+	
 	@RequestMapping("updateSuscribe.game")
 	public void updateSubscribe(String channelId, Model model, HttpSession session) {
 		String userId = session.getAttribute("user_id") + "";
@@ -92,6 +93,16 @@ public class GameController implements ConInterface {
 		vo.setChannel_id(channelId);
 		int sub = gameService.updateSubscibe(vo);
 		model.addAttribute("result", sub);
+	}
+	
+	@RequestMapping("recommand.game")
+	public void reco(Model model, HttpSession session) {
+		String user_id = session.getAttribute("user_id") + "";
+		String result = gameService.reco(user_id);
+		
+		model.addAttribute("views", result);
+		
+		
 	}
 	
 	@RequestMapping("randomInsert.game")

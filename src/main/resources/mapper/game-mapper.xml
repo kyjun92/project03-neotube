@@ -2,10 +2,10 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="game">
 	<!-- Read :: 메인페이지 동영상 목록 호출 -->
-	<select id="game_list" resultType="videoVO">
+	<select id="game_list" parameterType="String" resultType="videoVO">
 		select video_id, video_title,
 		play_num, video_date, channel_id, thumbnail from video where
-		category="game"
+		category="game" and video_id not in (select video_id from user_record where user_id = #{user_id})
 	</select>
 	<!-- Read :: 인기 페이지 동영상 목록 호출 -->
 	<select id="popular_list" resultType="videoVO">
@@ -88,10 +88,14 @@
 		where video_id = #{videoId}
 	</update>
 	<!-- Create :: user_record 정규분포 랜덤값 생성 -->
-	<insert id="randomRecord" parameterType="String">
+	<insert id="randomRecord" parameterType="userVO">
 		insert into
-		user_record values('mn4002',#{vId},now())
+		user_record values('mn40023',#{vId},now())
 	</insert>
+	<!-- Select :: user_record 에서 특정 user_id의 조회수를 가져옴 -->
+	<select id="recommand" parameterType="String" resultType="recoVO">
+		select count(user_id) as views from user_record where user_id = #{user_id}
+	</select>
 
 
 </mapper>

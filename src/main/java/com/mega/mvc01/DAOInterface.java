@@ -28,5 +28,7 @@ public interface DAOInterface {
 	
 	void updateSubscribe(SubscribeVO vo);
 	
+	public String reco_r(String user_id);
+	
 	void random();
 }

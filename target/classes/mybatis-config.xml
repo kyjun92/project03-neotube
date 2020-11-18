@@ -16,6 +16,7 @@
 		<typeAlias type="com.mega.mvc01.UserVO" alias="userVO"></typeAlias>
 		<typeAlias type="com.mega.mvc01.VideoVO" alias="videoVO"></typeAlias>
 		<typeAlias type="com.mega.mvc01.Client2VO" alias="client2VO"></typeAlias>
+		<typeAlias type="com.mega.mvc01.RecoVO" alias="recoVO"></typeAlias>
 
 		<!-- 승욱 VO -->
 		<typeAlias type="com.mega.mvc01.sport.ChannelVO"

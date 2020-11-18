@@ -7,7 +7,7 @@ public class UserVO {
 	String pw;
 	String name;
 	String gender;
-	Date birthday;
+	String birthday;
 	String tel;
 	public String getUser_id() {
 		return user_id;
@@ -33,10 +33,10 @@ public class UserVO {
 	public void setGender(String gender) {
 		this.gender = gender;
 	}
-	public Date getBirthday() {
+	public String getBirthday() {
 		return birthday;
 	}
-	public void setBirthday(Date birthday) {
+	public void setBirthday(String birthday) {
 		this.birthday = birthday;
 	}
 	public String getTel() {

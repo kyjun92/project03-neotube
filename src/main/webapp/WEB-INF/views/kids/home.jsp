@@ -8,7 +8,7 @@
 <head>
 <meta charset="UTF-8">
 <title>NUTUBE KIDS</title>
-<link rel="stylesheet" href="<c:url value="/resources/css/index_page.css?after" />">
+<link rel="stylesheet" href="../resources/css/index_page.css?after" />
 <link href="<c:url value="/resources/css/index.css?after" />" type="text/css" rel="stylesheet" />
 </head>
 <body>
@@ -22,12 +22,12 @@
 			</div>
 			<div id="nav_category">
 				<ul>
-					<li><a href="">Sports</a></li>
-					<li><a href="">Games</a></li>
-					<li><a href="">Cooking</a></li>
-					<li><a href="">Kids</a></li>
-					<li><a href="">Supports</a></li>
-					<li><a href="">Login</a></li>
+					<li><a href="../sports_index.jsp">Sports</a></li>
+					<li><a href="../game_index.jsp">Games</a></li>
+					<li><a href="../cooking_index.jsp">Cooking</a></li>
+					<li><a href="../kids_index.jsp">Kids</a></li>
+					<li><a href="../client/client.do">Supports</a></li>
+					<li><a href="../login/logn.do">Login</a></li>
 				</ul>
 			</div>
 		</nav>
@@ -39,7 +39,7 @@
 		<div><a href="../kids/subscribelist">구독</a></div>
 		<div><a href="../kids/likelist">좋아요</a></div>
 		<div><a href="../kids/history">시청기록</a></div>
-		<div><a href="">결제</a></div>
+		<div><a href="../payment/payment.do">결제</a></div>
 	</aside>
 	<!-- 본문 -->
 	<div class="main_page">

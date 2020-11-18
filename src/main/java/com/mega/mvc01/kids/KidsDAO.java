@@ -8,16 +8,26 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public class KidsDAO {
-
+	
 	@Autowired
 	SqlSessionTemplate mybatis;
 
 	public KidsVO one(KidsVO kidsVO) {
-		return mybatis.selectOne("one", kidsVO);
+		return mybatis.selectOne("kidsone", kidsVO);
 	}
 
 	public List<KidsVO> listByCategory(SearcherVO vo) {
 		List<KidsVO> result = mybatis.selectList("listByCategory", vo);
+		return result;
+	}
+	
+	public List<KidsVO> listByTracker(SearcherVO vo) {
+		List<KidsVO> result = mybatis.selectList("listByCategoryNolimit", vo);
+		return result;
+	}
+	
+	public List<KidsVO> listByPopular(SearcherVO vo) {
+		List<KidsVO> result = mybatis.selectList("listByPopular", vo);
 		return result;
 	}
 	
@@ -34,15 +44,6 @@ public class KidsDAO {
 	public List<KidsVO> listByHistory(SearcherVO vo) {
 		List<KidsVO> result = mybatis.selectList("listByHistory", vo);
 		return result;
-	}
-	
-	public List<KidsVO> listBySearch(String query) {
-		return null;
-	}
-
-	public void upload(KidsVO vo) {
-		// TODO Auto-generated method stub
-
 	}
 	
 	public int addHistory(UserControlVO vo) {

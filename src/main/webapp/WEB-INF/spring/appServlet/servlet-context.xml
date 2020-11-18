@@ -26,4 +26,17 @@
 	<context:component-scan base-package="com.mega.mvc01" />
 	
 	
+	<!-- aop를 annotation으로 설정하겠다. -->
+	<aop:aspectj-autoproxy/>
+	<aop:config>
+		<aop:pointcut
+			expression="execution(** com.mega.mvc01.*.*.error(..))" id="error"></aop:pointcut>
+		<aop:aspect ref="mail">
+			<aop:after-throwing method="mailSend"
+				pointcut-ref="error" throwing="ex" />
+		</aop:aspect>
+	</aop:config>
+	<!-- 에러 정보가 있으면 ex라는 변수에 담아줘라 지정 -->
+	
+	
 </beans:beans>

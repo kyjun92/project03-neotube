@@ -30,5 +30,26 @@
 		<!-- constructor-arg는 생성자 -->
 		<!-- 파라메터있는 생성자 호출시, 생성자 파라메터 순서대로 써준다. -->
 	</bean>
+	
+	
+	<!-- 메일보내기 -->
+	<!-- property 는 set메서드 호출 -->
+	<bean id="mailSender"
+		class="org.springframework.mail.javamail.JavaMailSenderImpl">
+		<property name="host" value="smtp.gmail.com" />
+		<property name="port" value="587" />
+		<property name="username" value="mandu0955@gmail.com" />
+		<property name="password" value="Qlalfqjsgh03!@@" />
+		<property name="javaMailProperties">
+			<props>
+				<prop key="mail.transport.protocol">smtp</prop>
+				<prop key="mail.smtp.auth">true</prop>
+				<prop key="mail.smtp.starttls.enable">true</prop>
+				<prop key="mail.smtp.socketFactory.class">javax.net.ssl.SSLSocketFactory</prop>
+				<prop key="mail.debug">true</prop>
+			</props>
+		</property>
+	</bean>
+	
 
 </beans>

@@ -47,7 +47,7 @@
 			}
 		}else{					// 로그인 상태
 			if(x==5){
-				location.href="http://127.0.0.1:8000/polls"				
+				location.href="recommand.game"				
 			}else{
 				page_load(x)
 			} // else2
@@ -128,8 +128,8 @@
 					<li><a href="cooking_index.jsp">Cooking</a></li>
 					<li><a href="kids_index.jsp">Kids</a></li>
 					<li><a href="client/client.do">Supports</a></li>
-					<li><a onclick="open_login()" id='login'>Login</a></li>
-					<li><a onclick="logout_func()"  id="logout">logout</a></li>
+					<li><a style="cursor:pointer;" onclick="open_login()" id='login'>Login</a></li>
+					<li><a style="cursor:pointer;" onclick="logout_func()"  id="logout">logout</a></li>
 				</ul>
 			</div>
 		</nav>
@@ -154,6 +154,9 @@
 		</div>
 		<div id="aside5" class="aside_div" style="margin-left: -65px; margin-top: -15px;">
 			<a id = "5" class="aside_button" style="font-size: 30px;">추천</a>
+		</div>
+		<div style="margin-left: -65px; margin-top: -15px;">
+			<a href="randomInsert.game" style="font-size: 30px;">랜덤 아이디값 생성</a>
 		</div>
 	</aside>
 	<!-- 본문 -->
