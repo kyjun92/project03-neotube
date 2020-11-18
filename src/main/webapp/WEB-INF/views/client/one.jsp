@@ -43,7 +43,7 @@ $(function(){
 <nav
 		class="navbar navbar-expand-lg navbar-light bg-light shadow fixed-top">
 		<div class="container">
-			<h3>고객센터</h3>
+			<h3><a href="client.do">고객센터</a> </h3>
 			<button class="navbar-toggler" type="button" data-toggle="collapse"
 				data-target="#navbarResponsive" aria-controls="navbarResponsive"
 				aria-expanded="false" aria-label="Toggle navigation">
@@ -105,20 +105,20 @@ $(function(){
 				</tr>
 				</table align=center; >
 				</table>
-				<div style="margin: 0 auto; width: 350px;" id="comment">
+				<div style="margin-left: 700px; width: 350px;" id="comment">
 				<hr style="margin-top: 150px">댓글 : &nbsp;&nbsp;&nbsp;&nbsp;<input id="content">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<button id="reply">입력</button>
 				</div>
-	<div id="d2" style="width: 450px; height: 200px; ">
+	<div id="d2" style="width: 450px; height: 200px;  ">
 		<table id="table2" align="center" width=450px; >
 			<c:forEach items="${list}" var="vo" varStatus="status">
-			<div  style="margin-right: 300px"  width=1000 >
+			<div  style=" margin-right: 600px;  ">
 				<tr>
 					<td style="width: 50px;">${status.index+1}</td>
 					<td style="width: 300px;">${vo.content}</td>
 					<td style="width: 100px;" >${vo.user_id}</td>
 										<td style="width: 100px;">
 						<!-- one.do?no=1  --> 
-						<a href="delete3.do?reply_id=${vo.reply_id}&border_id=${vo.border_id}" id=delete>
+						<a href="delete3.do?reply_id=${vo.reply_id}&border_id=${vo.border_id}" id=delete> <!-- 댓글쓰기 -->
 							<button >삭제</button>
 					</a>
 					</td>
@@ -132,7 +132,7 @@ $(function(){
 <script>
 var loginUserId = '${user_id}'                    
 var detailUserId = '${one.user_id}'
-	if(loginUserId == detailUserId){      
+	if(loginUserId == detailUserId){      //로그인 세션아이디와  입력한 아이디값이 같을경우 게시글수정 삭제 버튼이보임
 	$("#remove").css('display','inline-block');
 	$("#modify").css('display','inline-block');	
 	}else{
@@ -140,7 +140,7 @@ var detailUserId = '${one.user_id}'
 	$("#modify").css('display','none'); 
 	}  
 var loginUserId = '${user_id}'                    
-	  console.log(loginUserId);                        
+	  console.log(loginUserId);                    //로그인 세션아이디가 잇을경우 댓글을 달수잇게해준다   
 	if(loginUserId == null || loginUserId ==''){      
 	$("#comment").css('display','none'); 
 	}else{                                

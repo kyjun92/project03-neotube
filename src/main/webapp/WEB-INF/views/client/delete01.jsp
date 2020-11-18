@@ -1,10 +1,11 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <!DOCTYPE html>
-
 <html>
 <head>
-<meta charset="UTF-8" >
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<link rel="stylesheet" href="css/client.css">
 <link rel="stylesheet"
 	href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css"
 	integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2"
@@ -13,23 +14,9 @@
 	href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
 <script src="//code.jquery.com/jquery.min.js"></script>
 <script src="//code.jquery.com/ui/1.11.4/jquery-ui.min.js"></script>
-<script type="text/javascript">
-$(function() {
-		$("#taltoe").click(function() {
-			
-			location.href ="../game_index.jsp"
-					
-				
-				
-				
-			
 
-		
-
-	})
-	})
+<script>
 </script>
-<title>Insert title here</title>
 </head>
 <body>
  
@@ -39,7 +26,7 @@ $(function() {
 			<div class="col-sm-9 col-md-7 col-lg-5 mx-auto">
 				<div class="card card-signin my-5">
 					<div class="card-body">
-						<h2 class="card-title text-center">회원삭제되었습니다</h2>
+						<h2 class="card-title text-center">글이삭제되었습니다</h2>
 						<div class="form-label-group">
 							<br>
 							<br>
@@ -56,7 +43,7 @@ $(function() {
 						</div>
 						<br> <br> <br>
 						<h1>
-					     <button id ="taltoe">게시판</button>		 
+					     <a href="client.do"><button class="btn btn-lg btn-primary btn-block text-uppercase"  id="b1" name="b1">게시판</button></a>		 
 						</h1>
 
 
@@ -68,7 +55,6 @@ $(function() {
 			</div>
 		</div>
 	</div>
-
 
 
 </body>

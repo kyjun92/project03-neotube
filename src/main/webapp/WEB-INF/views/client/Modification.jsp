@@ -18,28 +18,22 @@
 	
 	$(function() {
 		$("#button").click(function() {
-			user_id = $("#user_id").val()
-			pw = $("#pw").val()
-			pw2 = $("#pw2").val()
-			name = $("#name").val()
-			tel = $("#tel").val()
+			user_id = $("#user_id").val() // 로그인 세션아이디값
+			pw = $("#pw").val() //pw입력값
+			pw2 = $("#pw2").val() //pw입력값
+			name = $("#name").val()//name입력값
+			tel = $("#tel").val()//tel입력값
 			$.ajax({
-				url : "Modification1.do",
+				url : "Modification1.do", //Controller
 				data : {
-					user_id : user_id,
+					user_id : user_id,//데이터값 보내기
 					pw : pw,
                     name : name,
                     tel : tel
 				},
-				success : function(result) {
-				if (result == 'null') {
-                       
-						alert("회원수정완료");
-						location.href = '../client/client.do'
-					} else {
-						alert("다시");
-
-					}//else
+				success : function() { //처리후
+					alert("회원수정되었습니다");
+					location.href="client.do" //수정후 게시판으로 이동
 
 				}//success
 			})
@@ -61,9 +55,29 @@
 </script>
 </head>
 <body>
+<nav
+		class="navbar navbar-expand-lg navbar-light bg-light shadow fixed-top">
+		<div class="container">
+			<h3><a href="client.do">고객센터</a> </h3>
+			<button class="navbar-toggler" type="button" data-toggle="collapse"
+				data-target="#navbarResponsive" aria-controls="navbarResponsive"
+				aria-expanded="false" aria-label="Toggle navigation">
+				<span class="navbar-toggler-icon"></span>
+			</button>
+			<div class="collapse navbar-collapse" id="navbarResponsive">
+				<ul class="navbar-nav ml-auto">
+					<li class="nav-item active"><a class="nav-link" href="../sports_index.jsp"">메인
+							<span class="sr-only">(current)</span>
+					</a></li>
+					<li class="nav-item"><a class="nav-link" href="#"></a></li>
+					<li class="nav-item"><a class="nav-link" href="#"></a></li>
+					<li class="nav-item"><a class="nav-link" href="#"></a></li>
+				</ul>
+			</div>
+		</div>
+	</nav>
 
-
-	<div class="container">
+	<div class="container" style="margin-top: 200px">
 		<div class="row">
 			<div class="col-sm-12">
 				<div class="col-sm-2"></div>
@@ -93,11 +107,7 @@
 									class="form-control" value="${vo.pw}"></td>
 							</tr>
 
-							<tr>
-								<td>패스워드확인</td>
-								<td><input type="password" name="pw2" id="pw2"
-									class="form-control"></td>
-							</tr>
+							
 
 							<tr>
 								<td colspan="2" class="text-center">

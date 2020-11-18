@@ -20,7 +20,28 @@
 </script>
 </head>
 <body>
-	<div class="container">
+<nav
+		class="navbar navbar-expand-lg navbar-light bg-light shadow fixed-top">
+		<div class="container">
+			<h3><a href="client.do">고객센터</a> </h3>
+			<button class="navbar-toggler" type="button" data-toggle="collapse"
+				data-target="#navbarResponsive" aria-controls="navbarResponsive"
+				aria-expanded="false" aria-label="Toggle navigation">
+				<span class="navbar-toggler-icon"></span>
+			</button>
+			<div class="collapse navbar-collapse" id="navbarResponsive">
+				<ul class="navbar-nav ml-auto">
+					<li class="nav-item active"><a class="nav-link" href="../sports_index.jsp"">메인
+							<span class="sr-only">(current)</span>
+					</a></li>
+					<li class="nav-item"><a class="nav-link" href="#"></a></li>
+					<li class="nav-item"><a class="nav-link" href="#"></a></li>
+					<li class="nav-item"><a class="nav-link" href="#"></a></li>
+				</ul>
+			</div>
+		</div>
+	</nav>
+	<div class="container" style="margin-top: 200px">
 		<div class="row">
 			<div class="col-sm-12">
 				<div class="col-sm-2"></div>

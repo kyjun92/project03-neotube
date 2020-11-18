@@ -21,9 +21,9 @@
 
 	$(function() {
 		$("#b1").click(function() {
-			user_id = $("#user_id").val()
-			border_title = $("#title").val()
-			content = $("#content").val()
+			user_id = $("#user_id").val() // 로그인한 세션아이디값 
+			border_title = $("#title").val() //입력받은값
+			content = $("#content").val() //입력받은값
 			
 			
 			//문자열 길이 
@@ -32,10 +32,10 @@
 			content_length = $("#content").val().length;
 			
 			
-             if (userid_length ==0 || title_length== 0|| content_length == 0 ) {
+             if (userid_length ==0 || title_length== 0|| content_length == 0 ) { //하나라도 입력하지않을경우
             	  alert('입력해주세요')
-			}else{
-				console.log('else')
+			}else{//모든값이 입력됫을경우
+				console.log('else') //게시글만들어주기 이동
 				location.href = '../client/insert01.do?user_id=' + user_id
 				+ '&border_title=' + border_title + '&content=' + content 
 			}//else 
@@ -46,12 +46,13 @@
 			})//function
 </script>
 
+
 </head>
 <body>
 <nav
 		class="navbar navbar-expand-lg navbar-light bg-light shadow fixed-top">
 		<div class="container">
-			<h3><button onclick="back()">고객센터</button></h3>
+			<h3><a href="client.do">고객센터</a> </h3>
 			<button class="navbar-toggler" type="button" data-toggle="collapse"
 				data-target="#navbarResponsive" aria-controls="navbarResponsive"
 				aria-expanded="false" aria-label="Toggle navigation">
@@ -70,8 +71,7 @@
 		</div>
 	</nav>
 	
-		<table style="padding-top: 100px; margin-top: 250px;" align=center width=1000 border=0
-			cellpadding=2 >
+		<table style="padding-top: 100px; margin: 0 auto; margin-top:250px; width: 1250px; cellpadding:2">
 			<tr>
 				<td height=20 align=center bgcolor=#ccc><font color=white>
 						글쓰기</font></td>
@@ -94,11 +94,7 @@
 							<td>내용</td>
 							<td><textarea id="content" name=content cols=150 rows=15 ></textarea></td>
 						</tr>
-
-
 					</table>
-					
-					
 						<button  value="작성" name="b1" id="b1">글쓰기</button>
 				</td>
 			</tr>
