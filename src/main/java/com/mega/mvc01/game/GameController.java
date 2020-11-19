@@ -24,6 +24,9 @@ public class GameController {
 
 	@Autowired
 	ServiceInterface gameService; // 서비스단 싱글톤으로 호출
+	
+	@Autowired
+	TransactionService tranService;
 
 	
 	@RequestMapping("select_main.game")
@@ -40,29 +43,38 @@ public class GameController {
 	
 	@RequestMapping("playingPage.game")
 	public void playingPage(String videoId, Model model, HttpSession session) {	// playing_page에 표시될 정보들을 불러옴
-		
+		int result = 1;
 		String userId = session.getAttribute("user_id") + ""; // session으로 잡혀있는 id값을 가져옴
-		gameService.updatePlaynum(videoId); // 비디오의 조회수 +1
 		
 		VideoVO videoVO = gameService.playingVideo(videoId); 	// 재생한 비디오의 정보 조회
 		model.addAttribute("videoVO", videoVO);					// 비디오 정보를 model로 묶음
 		ChannelVO channelVO = gameService.selectChannel(videoVO.getChannel_id()); 	// 재생한 비디오를 등록한 채널 정보
 		model.addAttribute("channelVO", channelVO);									//채널 정보 model
 		if(!userId.equals("null")) {							// login상태를 체크
+			//gameService.updatePlaynum(videoId); 				// 비디오의 조회수 +1
 			int like = gameService.selectLike(userId, videoId); // user_like table 에서 like 정보 따옴
 			model.addAttribute("like", like);					// 해당 영상에 대한 like_index를 넘김
 			
 			UserRecordVO userRecordVO = new UserRecordVO(); // 새로운 vo를 선언하여
 			userRecordVO.setUser_id(userId);				//user_id와 video_id를 묶어서 Service로 넘김
 			userRecordVO.setVideo_id(videoId);
-			gameService.inserUserRecord(userRecordVO); 		// user_record table에 조회 기록 등록
+			//gameService.inserUserRecord(userRecordVO); 		// user_record table에 조회 기록 등록
+			try {												//transaction 으로 조회수+1 과 user_record update를 부가기능으로 묶음
+				result = tranService.tran(userRecordVO);
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 			
 			SubscribeVO subscribeVO = new SubscribeVO();
-			subscribeVO.setUser_id(session.getAttribute("user_id") + "");
+			subscribeVO.setUser_id(userId);
 			subscribeVO.setChannel_id(videoVO.getChannel_id());
 			int sub = gameService.startSubscribe(subscribeVO);
 			model.addAttribute("sub", sub);
+			model.addAttribute("result", result);
 		}
+		
+		
 
 	}
 	

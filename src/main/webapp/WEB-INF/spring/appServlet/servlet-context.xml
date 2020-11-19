@@ -30,7 +30,7 @@
 	<aop:aspectj-autoproxy/>
 	<aop:config>
 		<aop:pointcut
-			expression="execution(** com.mega.mvc01.*.*.error(..))" id="error"></aop:pointcut>
+			expression="execution(** com.mega.mvc01.*.*.tran(..))" id="error"></aop:pointcut>
 		<aop:aspect ref="mail">
 			<aop:after-throwing method="mailSend"
 				pointcut-ref="error" throwing="ex" />

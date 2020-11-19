@@ -33,8 +33,8 @@ public class MailService {
 			// messager안에 값을 넣어야 하는데, vo 같은 클래스 객체를 만들어서
 			// 값을 넣어주어야 함.
 			MimeMessageHelper messageHelper = new MimeMessageHelper(message, true, "UTF-8");
-			messageHelper.setFrom("mandu0955@gmail.com");
-			messageHelper.setTo("mandu0955@gmail.com");
+			messageHelper.setFrom("kyjun92@gmail.com");
+			messageHelper.setTo("kyjun92@gmail.com");
 			messageHelper.setSubject("서버 문제 발생!!");
 			messageHelper.setText("문제\n" + body);
 			mailSender.send(message);

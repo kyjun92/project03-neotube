@@ -268,6 +268,7 @@
 					style="cursor: pointer; background: #cc0000; width: 100%; color: white; text-align: center; font-weight: bolder; padding-top: 17px;">구독</div>
 			</div>
 			<hr>
+			<h1>${result}</h1>
 		</div>
 
 	</div>
